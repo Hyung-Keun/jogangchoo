@@ -3,7 +3,7 @@ from flask import (
 )
 from pymongo import MongoClient
 
-#client = MongoClient("mongodb+srv://test:sparta@cluster0.kvwen.mongodb.net/Cluster0?retryWrites=true&w=majority");
+client = MongoClient("mongodb+srv://test:sparta@cluster0.kvwen.mongodb.net/Cluster0?retryWrites=true&w=majority");
 db = client["dbsparta"];
 
 def save_user(user_doc):
