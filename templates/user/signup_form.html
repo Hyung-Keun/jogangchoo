@@ -15,10 +15,11 @@
 		};
 		$.ajax({
 			type: 'POST',
-			url: '/user',
+			url: '/user/',
 			data: user_doc,
 			success: function (response) {
-				console.log(response['users'] );
+				console.log(response['msg'] );
+				console.log(response['object'] );
 			},
 			err: function(...err) {
 				alert(err);

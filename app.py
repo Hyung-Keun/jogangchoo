@@ -1,10 +1,10 @@
 from flask import (
 	Flask, render_template, request, jsonify
 )
-from user_bp import bp as bp_user
+from user.urls import bp as bp_user
 
 app = Flask(__name__);
-app.register_blueprint(bp_user);
+app.register_blueprint(bp_user, url_prefix="/user");
 
 @app.route("/")
 def home():
