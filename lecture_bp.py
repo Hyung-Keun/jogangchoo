@@ -10,7 +10,6 @@ bp = Blueprint('lecture', __name__, template_folder='templates');
 @bp.route("/lecture", methods=["POST"])
 def create_lecture_post():
 	url_receive = request.form["url_give"]
-	category_receive = request.form["category_give"]
 	comment_recieve = request.form["comment_give"]
 
 	headers = {
@@ -26,7 +25,6 @@ def create_lecture_post():
 		"url" : url_receive,
 		"title" : title,
 		"image" : image,
-		"category" : category_receive,
 		"comment" : comment_recieve,
 	}
 	if save_lecture(lecture_doc) == True:
@@ -38,5 +36,9 @@ def create_lecture_post():
 
 @bp.route("/lecture", methods=["GET"])
 def create_comment_get():
-	return get_lecture_list('msg')
+	return get_lecture_list("msg");
 
+
+@bp.route("/lecture/post", methods=["GET"])
+def create_lecture_get():
+	return render_template("lecture_post.html")
