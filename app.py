@@ -29,12 +29,12 @@ def movie_post():
 
     title = soup.select_one('meta[property="og:title"]')['content']
     image = soup.select_one('meta[property="og:image"]')['content']
-    desc = soup.select_one('meta[property="og:description"]')['content']
+    url = url_receive
 
     doc = {
+        'url' : url,
         'title' : title,
         'image' : image,
-        'desc' : desc,
         'star' : star_receive,
         'comment' : comment_receive
     }
@@ -54,3 +54,4 @@ def movie_get():
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+
