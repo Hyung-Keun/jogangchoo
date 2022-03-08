@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{%block script%}
+	function signup() {
+		let username, email, password;
+		[username, email, password] = [
+			$("#username").val(),
+			$("#email").val(),
+			$("#password").val()
+		];
+		console.log(username, email, password);
+		user_doc = {
+				username: username,
+				email: email,
+				password: password
+		};
+		$.ajax({
+			type: 'POST',
+			url: '/user/',
+			data: user_doc,
+			success: function (response) {
+				console.log(response['msg'] );
+				console.log(response['object'] );
+			},
+			err: function(...err) {
+				alert(err);
+			}
+		});
+	}
+{%endblock%}
+{%block header%}
+<h1>가입하기</h1>
+{%endblock%}
+{%block content%}	
+	<div>
+		username:<input id="username" type="text" class="form-control"> 
+		email:
+			<input id="email" type="text" class="form-control">
+		password:
+			<input id="password" type="text" class="form-control">
+		<button onclick="signup()">회원가입</button>
+	</div>
+{%endblock%}
+</body>
+</body>
