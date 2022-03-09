@@ -384,8 +384,8 @@
             </a>
             <div class="mini_nav">
                 <div class="log-out">
-                    <a href="/login" id="login_button">로그인</a>
-                    <a href="/mypage" id="mypage_button">마이페이지</a></div>
+                    <a href={{ url_for("user.login") }} id="login_button">로그인</a>
+                    <a href={{ url_for("user.mypage") }} id="mypage_button">마이페이지</a></div>
             </div>
 
             <a href="/lecture/post">
