@@ -1,13 +1,15 @@
 from flask import (
 	jsonify, request, Blueprint, render_template, make_response, session, g
 )
+from bson import objectid
 from .db import (
 	save_one, find_one
 )
 from .auth import (
-	gen_hashpw,  check_password, set_response_cookie, unset_reponse_cookie, check_input_valid, get_request_cookie, decode_token, create_token
+	gen_hashpw,  check_password, set_response_cookie, unset_reponse_cookie, check_input_valid, get_request_cookie, decode_token, create_token, get_user_id_name_email
 )
 from .decorators import login_required, logout_required
+from .like import do_like
 
 bp = Blueprint('user', __name__, template_folder='templates');
 
@@ -41,7 +43,7 @@ def login():
 		if not check_password(user["password"], request.form["password"]):
 			return jsonify({"msg": "password check error"});
 
-		user_token = create_token(user["_id"], user["email"]);
+		user_token = create_token(user["_id"], user["username"], user["email"]);
 		json_response = jsonify({"msg": "success", "access_token": user_token});
 		response = set_response_cookie(json_response, user_token, user);
 		return (response);
@@ -50,8 +52,9 @@ def login():
 @login_required
 def logout():
 	if request.method == "GET":
-		user = {"name": "test", "email": "test@test.com"}
-		return render_template("user/logout_form.html", user=user);
+		payload = get_user_id_name_email(request);
+		user_name = payload[1];
+		return render_template("user/logout_form.html", username=user_name);
 	else:
 		response = make_response(jsonify({"msg": "logout"}));
 		response.set_cookie("Authorization", "", max_age = 0);
@@ -60,14 +63,21 @@ def logout():
 from .like import find_many as find_likes
 
 @bp.route("info/", methods=["GET"])
-def user_detail():
+@login_required
+def detail():
 	auth_token = get_request_cookie(request)
 	if auth_token:
-		payload = decode_token(auth_token);
-		user_id = payload["user_id"];
-		user_email = payload["user_email"];
+		user_id, user_name, user_email = get_user_id_name_email(request)
 		user_likes = list(find_likes(user_id = user_id)); 
-		return jsonify({"_id": user_id, "email": user_email, "likes": user_likes});
+		return jsonify({"_id": user_id, "email": user_email, "name": user_name, "likes": user_likes});
 	else:
-		return jsonify({"_id": "", "email": ""});
+		return jsonify({"err":True, "msg": "invalid_token!"});
 
+@bp.route("like/<lecture_id>/", methods=["GET","POST"])
+@login_required
+def like_toggle(lecture_id):
+	user_id, _, _  = get_user_id_name_email(request)
+	ret = do_like(user_id, lecture_id);
+	if ret:
+		return (jsonify({"msg": "success"}));
+	return (jsonify({"msg": "failed", "err": True}));

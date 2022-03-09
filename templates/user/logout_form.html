@@ -1,30 +1,28 @@
 {% extends "base.html" %}
 {%block script%}
+<script>
 	function logout() {
 		$.ajax({
 			type: 'POST',
 			url: '/user/logout/',
 			data: {},
 			success: function (response) {
-				console.log(response['msg'] );
+				window.alert(response['msg']);
+				window.location.replace("{{url_for("home")}}");
 			},
 			err: function(...err) {
 				alert(err);
 			}
 		});
 	}
+</script>
 {%endblock%}
 {%block header%}
 <h1>로그아웃</h1>
 {%endblock%}
 {%block content%}	
 	<div>
-		{% if user %}
-			{{user.name}}
-			{{user.email}}
-		{% else %}
-			Not a user
-		{% endif %}
+		{{username}} 님 로그아웃 하시겠습니까?
 		<button onclick="logout()">로그아웃</button>
 	</div>
 {%endblock%}

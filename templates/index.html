@@ -1,368 +1,225 @@
-{#<!doctype html>#}
-{#<html lang="en">#}
-{##}
-{#<head>#}
-{#    <meta charset="utf-8">#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">#}
-{##}
-{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"#}
-{#          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">#}
-{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"#}
-{#            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"#}
-{#            crossorigin="anonymous"></script>#}
-{##}
-{#    <title>좋은 강의 추천해주세요</title>#}
-{##}
-{#    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">#}
-{##}
-{#    <style>#}
-{#        * {#}
-{#            font-family: 'Gowun Dodum', sans-serif;#}
-{#        }#}
-{##}
-{#        .mytitle {#}
-{#            width: 100%;#}
-{#            height: 250px;#}
-{##}
-{#            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');#}
-{#            background-position: center;#}
-{#            background-size: cover;#}
-{##}
-{#            color: white;#}
-{##}
-{#            display: flex;#}
-{#            flex-direction: column;#}
-{#            align-items: center;#}
-{#            justify-content: center;#}
-{#        }#}
-{##}
-{#        .mytitle > button {#}
-{#            width: 200px;#}
-{#            height: 50px;#}
-{##}
-{#            background-color: transparent;#}
-{#            color: white;#}
-{##}
-{#            border-radius: 50px;#}
-{#            border: 1px solid white;#}
-{##}
-{#            margin-top: 10px;#}
-{#        }#}
-{##}
-{#        .mytitle > button:hover {#}
-{#            border: 2px solid white;#}
-{#        }#}
-{##}
-{#        .mycomment {#}
-{#            color: gray;#}
-{#        }#}
-{##}
-{#        .mycards {#}
-{#            margin: 20px auto 0px auto;#}
-{#            width: 95%;#}
-{#            max-width: 1200px;#}
-{#        }#}
-{##}
-{#        .mypost {#}
-{#            width: 95%;#}
-{#            max-width: 500px;#}
-{#            margin: 20px auto 0px auto;#}
-{#            padding: 20px;#}
-{#            box-shadow: 0px 0px 3px 0px gray;#}
-{##}
-{#            display: none;#}
-{#        }#}
-{##}
-{#        .mybtns {#}
-{#            display: flex;#}
-{#            flex-direction: row;#}
-{#            align-items: center;#}
-{#            justify-content: center;#}
-{##}
-{#            margin-top: 20px;#}
-{#        }#}
-{##}
-{#        .mybtns > button {#}
-{#            margin-right: 10px;#}
-{#        }#}
-{##}
-{##}
-{#        .category{#}
-{#            display: flex;#}
-{#            flex-direction: row;#}
-{#            align-items: center;#}
-{#            justify-content: center;#}
-{#        }#}
-{#    </style>#}
-{#    <script>#}
-{#        $(document).ready(function () {#}
-{#            listing();#}
-{#        });#}
-{##}
-{#        function listing() {#}
-{#            $.ajax({#}
-{#                type: 'GET',#}
-{#                url: '/movie',#}
-{#                data: {},#}
-{#                success: function (response) {#}
-{#                    let rows = response['movies']#}
-{#                    for (let i = 0; i < rows.length; i++) {#}
-{#                        let comment = rows[i]['comment']#}
-{#                        let url = rows[i]['url']#}
-{#                        let title = rows[i]['title']#}
-{#                        let image = rows[i]['image']#}
-{##}
-{##}
-{#                        let temp_html = `<div class="col">#}
-{#                                            <div class="card h-100">#}
-{#                                                <img onclick="location.href='${url}'" src="${image}"#}
-{#                                                     class="card-img-top">#}
-{#                                                <div class="card-body">#}
-{#                                                    <h5 class="card-title">${title}</h5>#}
-{#                                                    <p class="mycomment">${comment}</p>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                        </div>`#}
-{##}
-{#                        $('#cards-box').append(temp_html)#}
-{##}
-{#                    }#}
-{##}
-{#                }#}
-{#            })#}
-{#        }#}
-{##}
-{#        function posting() {#}
-{#            let url = $('#url').val()#}
-{#            let comment = $('#comment').val()#}
-{##}
-{#            $.ajax({#}
-{#                type: 'POST',#}
-{#                url: '/movie',#}
-{#                data: {url_give: url, comment_give: comment},#}
-{#                success: function (response) {#}
-{#                    alert(response['msg'])#}
-{#                    window.location.reload()#}
-{#                }#}
-{#            });#}
-{#        }#}
-{##}
-{#        function open_box() {#}
-{#            $('#post-box').show()#}
-{#        }#}
-{##}
-{#        function close_box() {#}
-{#            $('#post-box').hide()#}
-{#        }#}
-{#    </script>#}
-{#</head>#}
-{##}
-{#<body>#}
-{##}
-{#        <header class="main-header">#}
-{#            <div class="main-header-wrap">#}
-{#                <div class="main-header-container">#}
-{#          로고          #}
-{#                    <a href="/">#}
-{#                        <h1 class="logo">CLASS202</h1>#}
-{#                    </a>#}
-{#          검색창          #}
-{#                    <div class="header-search">#}
-{#                        <form method="GET" action="/search">#}
-{#                            <input type="text" id="hs-input" name="search_give" value=""#}
-{#                                   placeholder="찾으시는 취미가 있으신가요?"/>#}
-{#                            <label for="hs-input"></label>#}
-{#                            <button type="submit">#}
-{#                                <i class="xi-search"></i>#}
-{#                            </button>#}
-{#                        </form>#}
-{#                    </div>#}
-{#          버튼들          #}
-{#                    <div class="header-br">#}
-{#                        <a href="/post_write" class="btn01" id="post_write_button">작성하기</a>#}
-{#                        <a href="/mypage" class="btn02" id="mypage_button">마이페이지</a>#}
-{#                        <a href="/login" class="btn02" id="login_button">로그인</a>#}
-{#                        <a href="/" class="btn02" id="signout_button" onclick="sign_out()">로그아웃</a>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </header>#}
-{##}
-{#<div class="mytitle">#}
-{#    <h1>좋강추</h1>#}
-{#    <button onclick="open_box()">영화 기록하기</button>#}
-{#    <button onclick="">추천하기</button>#}
-{#    <button onclick ="">로그인</button>#}
-{#</div>#}
-{#<div class ="category">#}
-{#    <button onclick="">전체</button>#}
-{#    <button onclick="">프론트엔드</button>#}
-{#    <button onclick="">백엔드</button>#}
-{#    <button onclick="">기타</button>#}
-{##}
-{##}
-{#</div>#}
-{#<div class="mypost" id="post-box">#}
-{#    <div class="form-floating mb-3">#}
-{#        <input id="url" type="email" class="form-control" placeholder="name@example.com">#}
-{#        <label>영화URL</label>#}
-{#    </div>#}
-{#    <div class="input-group mb-3">#}
-{#        <label class="input-group-text" for="inputGroupSelect01">별점</label>#}
-{#        <select class="form-select" id="star">#}
-{#            <option selected>-- 선택하기 --</option>#}
-{#            <option value="1">⭐</option>#}
-{#            <option value="2">⭐⭐</option>#}
-{#            <option value="3">⭐⭐⭐</option>#}
-{#            <option value="4">⭐⭐⭐⭐</option>#}
-{#            <option value="5">⭐⭐⭐⭐⭐</option>#}
-{#        </select>#}
-{#    </div>#}
-{#    <div class="form-floating">#}
-{#        <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>#}
-{#        <label for="floatingTextarea2">코멘트</label>#}
-{#    </div>#}
-{#    <div class="mybtns">#}
-{#        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>#}
-{#        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>#}
-{#    </div>#}
-{#</div>#}
-{#<div class="mycards">#}
-{#    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">#}
-{#    </div>#}
-{#</div>#}
-{#</body>#}
-{##}
-{#</html>#}
-
-<!DOCTYPE html>
-<html lang="en">
-<HEAD>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="og:title" content="">
-    <meta property="og:content" content="">
-    <meta property="og:image" content="">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Open+Sans:wght@400;600&display=swap"
-          rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-            integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-            crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href={{ url_for("static", filename="css/jh_style.css") }}>
-
-    <link rel="stylesheet" href="../static/css/style.css"/>
-    <link rel="stylesheet" href="../static/css/jh_style.css"/>
+{% extends "base.html"%}
+{%block script%}
+<script>
+function like(lecture_id) {
+	$.ajax({
+		type: 'POST',
+		url: `/user/like/${lectuer_id}`,
+		data: {
+		},
+		success: function (response) {
+			if (response["err"]) {
+				window.alert("like failed!");
+			} else {
+				window.alert("like success!");
+				get_user_info();
+			}
+		},
+		fail: function(...err) {
+			console.log(err);
+		},
+	});
+}
 
 
-    <script src={{ url_for("static", filename="js/main.js") }}></script>
+function get_login_user_info() {
+	$.ajax({
+		type: 'GET',
+		url: "/user/info/",
+		data: {},
+		success: function (response) {
+			if (response["err"]) {
+				window.alert("not login user");
+			} else {
+				let user_id = response["_id"]
+				let likes = response["likes"]
+				console.log("user_id:", user_id);
+				likes.map(
+					(el) => {
+						console.log("user like", el["lecture_id"]
+					)});
+			}
+		},
+		fail: function(...err) {
+			console.log(err);
+		},
+	});
+}
 
-    <style>
-        .mytitle {
-            width: 100%;
-            height: 250px;
+login_status = ("{{ login_status }}")
+$(document).ready(function () {
+    // 로그인 된 상태라면
+    if (login_status == "True") {
+		get_login_user_info();
+        // '로그인'버튼에 is-hidden이라는 클래스를 추가한다
+        console.log("로그인 버튼 감추기");
+        $("#login_button").addClass("d-none");
+		
+    }
+    // 로그인 안 된 상태라면
+    else {
+        console.log("마이페이지 버튼 감추기");
 
-            background-color : #1D1B1B;
+        $("#mypage_button").addClass("d-none");
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+    }
+    get_posts()
+ });
+
+function get_posts(username) {
+    if (username == undefined) {
+        username = ""
+    }
+
+
+    $(document).ready(function () {
+        listing()
+
+    });
+
+    function listing() {
+        $.ajax({
+            type: 'GET',
+            url: '/lecture',
+            data: {},
+            success: function (response) {
+                let rows = response['lectures']
+
+                for (let i = 0; i < rows.length; i++) {
+                    let url = rows[i]['url']
+                    let comment = rows[i]['comment']
+                    let title = rows[i]['title']
+                    let image = rows[i]['image']
+                    let category = rows[i]['category']
+                    let author_id = rows[i]['author_id']
+
+
+                    let temp_html = `<div class="col">
+                                    <div class="card h-95">
+                                        <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                        <img src="${image}"
+                                             class="card-img-top">
+                                        <p>${category}</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">${title}</h5>
+                                            <p class="mycomment">${comment}</p>`
+                    if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p>작성자 : {{username}}</p>`)
+						{% else %}
+                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                    }
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                    $('#cards-box').append(temp_html)
+
+                }
+            }
+        })
+    }
+
+    function front_toggle_btn() {
+        if ($("#frbtn").hasClass("btn btn-primary")) {
+            $("#frbtn").removeClass("btn btn-primary");
+            $("#frbtn").addClass("btn btn-outline-secondary");
+
+        } else {
+            $("#frbtn").removeClass("btn btn-outline-secondary");
+            $("#frbtn").addClass("btn btn-primary");
+
         }
+    }
 
-        .mytitle > a > button {
-            width: 150px;
-            height: 50px;
+    //프론트엔드 체크박스 동작
+    $(document).ready(function () {
+        $("#frontCheck").change(function () {
+            if ($("#frontCheck").is(":checked")) {
 
-            background-color: transparent;
-            color: #EC4D36;
+                $.ajax({
+                    type: 'GET',
+                    url: '/lecture/front',
+                    data: {},
+                    success: function (response) {
+                        let rows = response['lectures']
+                        $('#cards-box').empty()
 
-            border-radius: 50px;
-            border: 1px solid #EC4D36;
-
-            margin-top: 10px;
-        }
-
-        .mytitle > button:hover {
-            border: 2px solid #EC4D36;
-        }
-
-        .logo {
-            font-size: 90px;
-            color: #EC4D36
-        }
-
-        .mini_nav > div {
-            position: absolute;
-            top: 45px;
-            right: 30px;
-        }
-
-        .mini_nav > div a {
-            color: #EC4D36;
-            font-weight: 300;
-            font-size: 14px;
-        }
-
-        .mini_nav > div a:hover {
-            color: #EC4D36;
-            font-weight: bolder;
-            font-size: 14px;
-        }
-
-        .mini_nav > div a:last-of-type {
-            margin-left: 15px;
-            color : #EC4D36
-        }
+                        for (let i = 0; i < rows.length; i++) {
+                            let url = rows[i]['url']
+                            let comment = rows[i]['comment']
+                            let title = rows[i]['title']
+                            let image = rows[i]['image']
+                            let category = rows[i]['category']
 
 
+                            let temp_html = `<div class="col">
+                                    <div class="card h-95">
+                                        <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                        <img src="${image}"
+                                             class="card-img-top">
+                                        <p>${category}</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">${title}</h5>
+                                            <p class="mycomment">${comment}</p>
+                                        </div>
+                                    </div>
+                                </div>`
 
-        .mycards {
-            margin: 20px auto 0px auto;
-            width: 95%;
-            max-width: 1200px;
-        }
 
+                            $('#front-box').append(temp_html)
 
-    </style>
-
-
-    <script>
-        $(document).ready(function () {
-            listing()
-        });
-
-        function listing() {
-            $.ajax({
-                type: 'GET',
-                url: '/lecture',
-                data: {},
-                success: function (response) {
-                    let rows = response['lectures']
-                    let arr = [1,2,3];
-
-                    for (let i = 0; i < rows.length; i++) {
-                        let url = rows[i]['url']
-                        let comment = rows[i]['comment']
-                        let title = rows[i]['title']
-                        let image = rows[i]['image']
-                        let category = rows[i]['category']
-
-                        if(category.includes("front") == true){
-                            const front_rows = arr.concat('i')
                         }
+                    }
+                })
+            } else {
+                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
+                    $('#front-box').empty()
+                    listing()
+                } else {
+                    $('#front-box').empty()
 
-                        let temp_html = `<div class="col">
+
+                }
+            }
+
+
+        });
+    });
+
+
+    //백엔드 체크박스 동작
+    $(document).ready(function () {
+        $("#backCheck").change(function () {
+            if ($("#backCheck").is(":checked")) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/lecture/back',
+                    data: {},
+                    success: function (response) {
+                        let rows = response['lectures']
+
+                        $('#cards-box').empty()
+
+                        for (let i = 0; i < rows.length; i++) {
+                            let url = rows[i]['url']
+                            let comment = rows[i]['comment']
+                            let title = rows[i]['title']
+                            let image = rows[i]['image']
+                            let category = rows[i]['category']
+
+                            let temp_html = `<div class="col">
                                             <div class="card h-95">
                                                 <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
                                                 <img src="${image}"
                                                      class="card-img-top">
+                                                <p>${category}</p>
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
@@ -371,42 +228,84 @@
                                             </div>
                                         </div>`
 
-                        $('#cards-box').append(temp_html)
 
+                            $('#back-box').append(temp_html)
+
+                        }
                     }
-                }
-            })
-        }
-
-        function front_toggle_btn() {
-            if ($("#frbtn").hasClass("btn btn-primary")) {
-                $("#frbtn").removeClass("btn btn-primary");
-                $("#frbtn").addClass("btn btn-outline-secondary");
-
+                })
             } else {
-                $("#frbtn").removeClass("btn btn-outline-secondary");
-                $("#frbtn").addClass("btn btn-primary");
-
-            }
-        }
-
-        $(document).ready(function () {
-            $("#frontCheck").change(function () {
-                if ($("#frontCheck").is(":checked")) {
-
-                    alert("체크박스 체크했음!");
+                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
+                    $('#back-box').empty()
+                    listing()
                 } else {
-                    alert("체크박스 체크 해제!");
+                    $('#back-box').empty()
+
+
                 }
-            });
+            }
         });
+    });
 
 
-    </script>
-    <title>좋은 강의 추천점</title>
-</head>
+    //기타 체크박스 동작
+    $(document).ready(function () {
+        $("#etcCheck").change(function () {
+            if ($("#etcCheck").is(":checked")) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/lecture/etc',
+                    data: {},
+                    success: function (response) {
+                        let rows = response['lectures']
+                        $('#cards-box').empty()
 
-<body>
+                        for (let i = 0; i < rows.length; i++) {
+                            let url = rows[i]['url']
+                            let comment = rows[i]['comment']
+                            let title = rows[i]['title']
+                            let image = rows[i]['image']
+                            let category = rows[i]['category']
+
+                            let temp_html = `<div class="col">
+                                    <div class="card h-95">
+                                        <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+											<img src="${image}" class="card-img-top">
+											<p>${category}</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">${title}</h5>
+                                            <p class="mycomment">${comment}</p>
+                                        </div>
+									</div>
+                                </div>`;
+                            $('#etc-box').append(temp_html)
+                        }
+                    }
+                })
+            } else {
+                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
+                    $('#etc-box').empty()
+                    listing()
+                } else {
+                    $('#etc-box').empty()
+
+
+                }
+            }
+        });
+    });
+
+}
+
+
+
+
+</script>
+
+{%endblock%}
+
+{% block content %}
     <header>
         <div class="mytitle">
             <a href="/">
@@ -414,58 +313,62 @@
             </a>
             <div class="mini_nav">
                 <div class="log-out">
-                    <a href="/login">로그인</a>
-                    <a href="/mypage">마이페이지</a></div>
+				{% if login_status %}
+                	<a href={{ url_for("user.logout") }} id="mypage_button">logout</a>
+				{% else %}
+					<a href={{ url_for("user.login") }} id="login_button">로그인</a>
+					<a href={{ url_for("user.create_view") }} id="signup_button">회원가입</a>
+				{% endif %}
             </div>
 
             <a href="/lecture/post">
-            <button>강의 추천하기</button>
+            <button class="post">강의 추천하기</button>
             </a>
         </div>
-
-
     </header>
 
-    <input type="checkbox" id="check_all" class="input_check"><label for="check_all"><b>전체</b></label>
-    <ul class="select_subject">
+    <main>
+    <div class="check_wrap">
 
-        <input type="checkbox" class="input_check" name="class2" id="check2" value="2"><label
-            for="check2"><b>백엔드</b></label>
-        <input type="checkbox" class="input_check" name="class3" id="check3" value="3"><label
-            for="check3"><b>기타</b></label>
-    </ul>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="frontCheck" value="option2">
+            <label class="form-check-label" for="inlineCheckbox2">프론트엔드</label>
+        </div>
 
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="backCheck" value="option3">
+            <label class="form-check-label" for="inlineCheckbox3">백엔드</label>
+        </div>
 
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="etcCheck" value="option4">
+            <label class="form-check-label" for="inlineCheckbox4">기타</label>
+        </div>
 
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="checkBoxId" value="option1">
-        <label class="form-check-label" for="check_all">전체</label>
     </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="frontCheck" value="option2">
-        <label class="form-check-label" for="inlineCheckbox2">프론트엔드</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-        <label class="form-check-label" for="inlineCheckbox3">백엔드</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
-        <label class="form-check-label" for="inlineCheckbox4">기타</label>
-    </div>
-
-
-
 
 
     <div class="mycards">
-        <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-        </div>
+        <p class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+        </p>
+
+        <p class="row row-cols-1 row-cols-md-4 g-4" id="front-box">
+        </p>
+
+        <p class="row row-cols-1 row-cols-md-4 g-4" id="back-box">
+        </p>
+
+        <p class="row row-cols-1 row-cols-md-4 g-4" id="etc-box">
+        </p>
+
+        <p class="row row-cols-1 row-cols-md-4 g-4" id="front+back_box">
+        </p>
+
+        <p class="row row-cols-1 row-cols-md-4 g-4" id="back+front_box">
+        </p>
+
+        <p class="row row-cols-1 row-cols-md-4 g-4" id="etc-box">
+        </p>
     </div>
-
-</body>
-</html>
-
+</main>
+{% endblock %}

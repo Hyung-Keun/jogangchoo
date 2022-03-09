@@ -1,33 +1,37 @@
 {% extends "base.html" %}
 {%block script%}
-	function login() {
-		let email, password;
-		[email, password] = [
-			$("#email").val(),
-			$("#password").val()
-		];
-		user_doc = {
-				email: email,
-				password: password
-		};
-		$.ajax({
-			type: 'POST',
-			url: '/user/login/',
-			data: user_doc,
-			success: function (response) {
-				console.log(response['msg'] );
-				console.log(response['access_token'] );
-			},
-			err: function(...err) {
-				alert(err);
+<script>
+function login() {
+	let email, password;
+	[email, password] = [
+		$("#email").val(),
+		$("#password").val()
+	];
+	user_doc = {
+			email: email,
+			password: password
+	};
+	$.ajax({
+		type: 'POST',
+		url: '/user/login/',
+		data: user_doc,
+		success: function (response) {
+			if (response["msg"] == "success") {
+				window.location.replace("{{ url_for("home") }}")
+			} else {
+				window.alert(response["msg"]);
 			}
-		});
-	}
-{%endblock%}
-{%block header%}
-<h1>로그인</h1>
-{%endblock%}
-{%block content%}	
+		},
+		err: function(...err) {
+			alert(err);
+		}
+	});
+}
+
+</script>
+{% endblock %}
+
+{% block content %}	
 	<div>
 		email:
 			<input id="email" type="text" class="form-control">
@@ -35,6 +39,5 @@
 			<input id="password" type="text" class="form-control">
 		<button onclick="login()">로그인</button>
 	</div>
-{%endblock%}
-</body>
-</body>
+
+{% endblock %}
