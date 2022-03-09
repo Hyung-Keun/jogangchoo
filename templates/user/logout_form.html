@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{%block script%}
+	function logout() {
+		$.ajax({
+			type: 'POST',
+			url: '/user/logout/',
+			data: {},
+			success: function (response) {
+				console.log(response['msg'] );
+			},
+			err: function(...err) {
+				alert(err);
+			}
+		});
+	}
+{%endblock%}
+{%block header%}
+<h1>로그아웃</h1>
+{%endblock%}
+{%block content%}	
+	<div>
+		{% if user %}
+			{{user.name}}
+			{{user.email}}
+		{% else %}
+			Not a user
+		{% endif %}
+		<button onclick="logout()">로그아웃</button>
+	</div>
+{%endblock%}
+</body>
+</body>

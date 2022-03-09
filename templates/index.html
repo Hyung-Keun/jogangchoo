@@ -1,4 +1,3 @@
-
 {#<!doctype html>#}
 {#<html lang="en">#}
 {##}
@@ -164,11 +163,11 @@
 {#        <header class="main-header">#}
 {#            <div class="main-header-wrap">#}
 {#                <div class="main-header-container">#}
-                    {#          로고          #}
+{#          로고          #}
 {#                    <a href="/">#}
 {#                        <h1 class="logo">CLASS202</h1>#}
 {#                    </a>#}
-                    {#          검색창          #}
+{#          검색창          #}
 {#                    <div class="header-search">#}
 {#                        <form method="GET" action="/search">#}
 {#                            <input type="text" id="hs-input" name="search_give" value=""#}
@@ -179,7 +178,7 @@
 {#                            </button>#}
 {#                        </form>#}
 {#                    </div>#}
-                    {#          버튼들          #}
+{#          버튼들          #}
 {#                    <div class="header-br">#}
 {#                        <a href="/post_write" class="btn01" id="post_write_button">작성하기</a>#}
 {#                        <a href="/mypage" class="btn02" id="mypage_button">마이페이지</a>#}
@@ -237,42 +236,136 @@
 {##}
 {#</html>#}
 
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<HEAD>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="">
+    <meta property="og:content" content="">
+    <meta property="og:image" content="">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Open+Sans:wght@400;600&display=swap"
+          rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+            integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href={{ url_for("static", filename="css/jh_style.css") }}>
 
-{% block script %}
+    <link rel="stylesheet" href="../static/css/style.css"/>
+    <link rel="stylesheet" href="../static/css/jh_style.css"/>
 
-    $(document).ready(function () {
+
+    <script src={{ url_for("static", filename="js/main.js") }}></script>
+
+    <style>
+        .mytitle {
+            width: 100%;
+            height: 250px;
+
+            background-color : #1D1B1B;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mytitle > a > button {
+            width: 150px;
+            height: 50px;
+
+            background-color: transparent;
+            color: #EC4D36;
+
+            border-radius: 50px;
+            border: 1px solid #EC4D36;
+
+            margin-top: 10px;
+        }
+
+        .mytitle > button:hover {
+            border: 2px solid #EC4D36;
+        }
+
+        .logo {
+            font-size: 90px;
+            color: #EC4D36
+        }
+
+        .mini_nav > div {
+            position: absolute;
+            top: 45px;
+            right: 30px;
+        }
+
+        .mini_nav > div a {
+            color: #EC4D36;
+            font-weight: 300;
+            font-size: 14px;
+        }
+
+        .mini_nav > div a:hover {
+            color: #EC4D36;
+            font-weight: bolder;
+            font-size: 14px;
+        }
+
+        .mini_nav > div a:last-of-type {
+            margin-left: 15px;
+            color : #EC4D36
+        }
+
+
+
+        .mycards {
+            margin: 20px auto 0px auto;
+            width: 95%;
+            max-width: 1200px;
+        }
+
+
+    </style>
+
+
+    <script>
+        $(document).ready(function () {
             listing()
         });
 
         function listing() {
-            window.alert("또되냐?")
-
-
             $.ajax({
                 type: 'GET',
                 url: '/lecture',
                 data: {},
                 success: function (response) {
                     let rows = response['lectures']
-
+                    let arr = [1,2,3];
 
                     for (let i = 0; i < rows.length; i++) {
-
-
-
+                        let url = rows[i]['url']
                         let comment = rows[i]['comment']
                         let title = rows[i]['title']
-                        let category = rows[i]['category']
                         let image = rows[i]['image']
+                        let category = rows[i]['category']
+
+                        if(category.includes("front") == true){
+                            const front_rows = arr.concat('i')
+                        }
 
                         let temp_html = `<div class="col">
-                                            <div class="card h-100">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
                                                 <img src="${image}"
                                                      class="card-img-top">
+                                                </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
-                                                    <p class="card-text">${category}</p>
                                                     <p class="mycomment">${comment}</p>
                                                 </div>
                                             </div>
@@ -281,31 +374,98 @@
                         $('#cards-box').append(temp_html)
 
                     }
-
                 }
             })
         }
 
+        function front_toggle_btn() {
+            if ($("#frbtn").hasClass("btn btn-primary")) {
+                $("#frbtn").removeClass("btn btn-primary");
+                $("#frbtn").addClass("btn btn-outline-secondary");
+
+            } else {
+                $("#frbtn").removeClass("btn btn-outline-secondary");
+                $("#frbtn").addClass("btn btn-primary");
+
+            }
+        }
+
+        $(document).ready(function () {
+            $("#frontCheck").change(function () {
+                if ($("#frontCheck").is(":checked")) {
+
+                    alert("체크박스 체크했음!");
+                } else {
+                    alert("체크박스 체크 해제!");
+                }
+            });
+        });
 
 
+    </script>
+    <title>좋은 강의 추천점</title>
+</head>
 
+<body>
+    <header>
+        <div class="mytitle">
+            <a href="/">
+                <h1 class="logo">좋강추</h1>
+            </a>
+            <div class="mini_nav">
+                <div class="log-out">
+                    <a href="/login">로그인</a>
+                    <a href="/mypage">마이페이지</a></div>
+            </div>
 
-
-
-{% endblock %}
-
-{% block header %}
-<h1>10조 1010class</h1>
-{% endblock %}
-
-{% block content %}
-
-<h1>추천 강의 리스트</h1>
-    <div class="mycards">
-        <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-
+            <a href="/lecture/post">
+            <button>강의 추천하기</button>
+            </a>
         </div>
+
+
+    </header>
+
+    <input type="checkbox" id="check_all" class="input_check"><label for="check_all"><b>전체</b></label>
+    <ul class="select_subject">
+
+        <input type="checkbox" class="input_check" name="class2" id="check2" value="2"><label
+            for="check2"><b>백엔드</b></label>
+        <input type="checkbox" class="input_check" name="class3" id="check3" value="3"><label
+            for="check3"><b>기타</b></label>
+    </ul>
+
+
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="checkBoxId" value="option1">
+        <label class="form-check-label" for="check_all">전체</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="frontCheck" value="option2">
+        <label class="form-check-label" for="inlineCheckbox2">프론트엔드</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+        <label class="form-check-label" for="inlineCheckbox3">백엔드</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
+        <label class="form-check-label" for="inlineCheckbox4">기타</label>
     </div>
 
 
-{% endblock %}
+
+
+
+    <div class="mycards">
+        <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+        </div>
+    </div>
+
+</body>
+</html>
+

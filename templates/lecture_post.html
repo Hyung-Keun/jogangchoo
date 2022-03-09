@@ -12,40 +12,85 @@
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href={{ url_for("static", filename="css/main.css") }}>
+	<link rel="stylesheet" href={{ url_for("static", filename="css/jh_style.css") }}>
 	<script src={{ url_for("static", filename="js/main.js") }}></script>
+    <style>
+
+    </style>
 	<script>
 
 	function input_lecture() {
+
         let url = $("#url").val()
-        let category = $("#category").val()
-		let comment = $("#comment").val()
+        let comment = $("#comment").val()
 
-		$.ajax({
-			type: 'POST',
-			url: '/lecture',
-			data: {url_give : url, category_give : category, comment_give : comment},
-			success: function (response) {
-		        alert(response['msg']);
-                window.location.reload()
-		    }
-        });
-	}
+        if($("#inlineCheckbox1").is(':checked')==false && $("#inlineCheckbox2").is(':checked')==false && $("#inlineCheckbox3").is(':checked') == false){
+            alert("강의 카테고리를 한 가지 이상 선택해주세요")
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: '/lecture',
+                traditional : true,
+                data: {url_give: url, comment_give: comment, category_give : input_lecture2()},
+                success: function (response) {
+                    alert(response['msg']);
+                    goPage()
+                },
+                error: alert("유효한 url 주소가 아니야 ")
+            });
+        }
+    }
 
-	</script>
+    function input_lecture2() {
+        const array = Array();
+        let send_cnt =0;
+        const chkbox = $(".form-check-input")
+
+        for(i=0; i<chkbox.length; i++){
+            if(chkbox[i].checked == true){
+                array[send_cnt] = chkbox[i].value
+
+                send_cnt++
+            }
+        }
+        console.log(array.join(","))
+        return array.join(",")
+
+    }
+    function goPage() { location.href="/"; }
+
+
+
+    </script>
 	<title>hanghae99 10</title>
 </head>
 <body>
-	<main>
-		<header>
-			<h1>강의 추천하기</h1>
-		</header>
-        url:<input id ="url" type="text" class="form-control">
-        category:<input id ="category" type="text" class="form-control">
-		comment:<input id="comment" type="text" class="form-control">
-		<button onclick="input_lecture()">등록하기</button>
+<main>
+    <header>
+        <h1>강의 추천하기</h1>
+    </header>
 
-	</main>
-</body>
+    url:<input id="url" type="text" class="form-control">
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="front">
+        <label class="form-check-label" for="inlineCheckbox1">프론트엔드</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="back">
+        <label class="form-check-label" for="inlineCheckbox2">백엔드</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="etc">
+        <label class="form-check-label" for="inlineCheckbox3">기타(취업 등)</label>
+    </div>
+
+    <div>
+        comment:<input id="comment" style="" type="text" class="form-control">
+        <button onclick="input_lecture()">등록하기</button>
+    </div>
+
+</main>
 </body>
 </html>
