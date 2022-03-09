@@ -17,10 +17,8 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href={{ url_for("static", filename="css/jh_style.css") }}>
 
     <link rel="stylesheet" href="../static/css/style.css"/>
-    <link rel="stylesheet" href="../static/css/jh_style.css"/>
 
 
     <script src={{ url_for("static", filename="js/main.js") }}></script>
@@ -120,6 +118,55 @@
 
 
     <script>
+
+
+        function like(lecture_id) {
+            $.ajax({
+                type: 'POST',
+                url: `/user/like/${lectuer_id}`,
+                data: {},
+                success: function (response) {
+                    if (response["err"]) {
+                        window.alert("like failed!");
+                    } else {
+                        window.alert("like success!");
+                        get_user_info();
+                    }
+                },
+                fail: function (...err) {
+                    console.log(err);
+                },
+            });
+        }
+
+
+        function get_login_user_info() {
+            $.ajax({
+                type: 'GET',
+                url: "/user/info/",
+                data: {},
+                success: function (response) {
+                    if (response["err"]) {
+                        window.alert("not login user");
+                    } else {
+                        let user_id = response["_id"]
+                        let likes = response["likes"]
+                        console.log("user_id:", user_id);
+                        likes.map(
+                            (el) => {
+                                console.log("user like", el["lecture_id"]
+                                )
+                            });
+                    }
+                },
+                fail: function (...err) {
+                    console.log(err);
+                },
+            });
+        }
+
+
+
         login_status = ("{{ login_status }}")
         console.log("로그인 상태", "login_status", login_status, typeof (login_status))
 
@@ -165,9 +212,16 @@
                             let title = rows[i]['title']
                             let image = rows[i]['image']
                             let author_id = rows[i]['author_id']
-                            let front = rows[i]['frontend']
-                            let back = rows[i]['backend']
-                            let etc = rows[i]['etc']
+                            {#let front = rows[i]['frontend']#}
+                            {#let back = rows[i]['backend']#}
+                            {#let etc = rows[i]['etc']#}
+
+
+
+                            let front = rows[i]['frontend'] == "true" ? '프론트' : ''
+                            let back = rows[i]['backend'] == "true" ? '백엔드' :''
+                            let etc = rows[i]['etc'] == "true" ? '기타' : ''
+
 
 
                             let temp_html = `<div class="col">
@@ -176,7 +230,7 @@
                                                 <img src="${image}"
                                                      class="card-img-top">
                                                 <p>
-                                                ${front},${back},${etc}</p>
+                                                 ${front} ${back} ${etc}</p>
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
@@ -1173,21 +1227,6 @@
                     )
                 }
             );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
 
@@ -1195,7 +1234,7 @@
 
 
     </script>
-    <title>좋은 강의 추천점</title>
+    <title>좋강추</title>
 </head>
 
 <body>
@@ -1218,7 +1257,6 @@
 
     </header>
 
-    <main>
     <div class="check_wrap">
 
         <div class="form-check form-check-inline">
@@ -1245,18 +1283,22 @@
 
     </div>
 
-    </main>
 
-       <footer class="footer">
-          <nav>
-              <a href='https://github.com/hyjune92/jogangchoo' target='_blank'>Github</a>
-          </nav>
-          <p>
-              <span>항해 99</span><br/>
-              <span>이메일 : cocoder16@gmail.com</span><br/>
-              <span>Copyright 2020. cocoder. All Rights Reserved.</span>
-          </p>
-      </footer>
+    <div id='footer_wrapper'>
+        <div>
+            <nav>
+                <a href='https://github.com/hyjune92/jogangchoo' target='_blank'>Github</a>
+            </nav>
+            <br>
+            <p>
+                <span>항해99 6기 D반 10조</span><br/>
+                <span>한지훈   |   강형근   |   황연준</span><br/>
+                <span>Has No Copyright 2022. johgangchu. All Rights Is Yours.</span>
+            </p>
+        </div>
+    </div>
+    <footer></footer>
+
 
 </body>
 </html>

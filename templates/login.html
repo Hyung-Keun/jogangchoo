@@ -17,10 +17,8 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href={{ url_for("static", filename="css/jh_style.css") }}>
 
     <link rel="stylesheet" href="../static/css/style.css"/>
-    <link rel="stylesheet" href="../static/css/jh_style.css"/>
 
 
     <script src={{ url_for("static", filename="js/main.js") }}></script>
@@ -88,58 +86,66 @@
 
 
     </script>
-    <title>좋은 강의 추천점</title>
+    <title>좋강추</title>
 </head>
 
 <body>
-    <header>
-        <div class="mytitle">
-            <a href="/">
-                <h1 class="logo">좋강추</h1>
-            </a>
-            <div class="mini_nav">
-                <div class="log-out">
-                    <a href="/login" id="login_button">로그인</a>
+<header>
+    <div class="mytitle">
+        <a href="/">
+            <h1 class="logo">좋강추</h1>
+        </a>
+        <div class="mini_nav">
+
+            <div class="log-out">
+                <a href="/login" id="login_button">로그인</a>
             </div>
 
         </div>
+    </div>
+</header>
 
 
-    </header>
+<div class="wrapper2">
 
-    <main>
+    <div class="input-group mb-3">
 
-        <div class="login">
-
-
-
-
-            <div class="input-group mb-3">
-
-                <input type="text" class="form-control" placeholder="이메일" aria-label="Username"
-                       aria-describedby="basic-addon1">
-            </div>
+        <input type="text" class="form-control" placeholder="이메일" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
 
 
-                        <div class="input-group mb-3">
+    <div class="input-group mb-3">
 
-                <input type="text" class="form-control" placeholder="비밀번호" aria-label="Username"
-                       aria-describedby="basic-addon1">
-            </div>
+        <input type="text" class="form-control" placeholder="비밀번호" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
 
-            <a href="/lecture/post">
-            <button class="post">로그인</button>
-            </a>
+    <a href="/lecture/post">
+        <button class="login">로그인</button>
+    </a>
 
-            <a href="/lecture/post">
-            <button class="post">회원가입</button>
-            </a>
-
-
+    <a href="/lecture/post">
+        <button class="login">회원가입</button>
+    </a>
 
 
+</div>
+
+      <div id='footer_wrapper'>
+        <div>
+            <nav>
+                <a href='https://github.com/hyjune92/jogangchoo' target='_blank'>Github</a>
+            </nav>
+            <br>
+            <p>
+                <span>항해99 6기 D반 10조</span><br/>
+                <span>한지훈   |   강형근   |   황연준</span><br/>
+                <span>Has No Copyright 2022. johgangchu. All Rights Is Yours.</span>
+            </p>
         </div>
-    </main>
+    </div>
+    <footer></footer>
 
 </body>
 </html>
