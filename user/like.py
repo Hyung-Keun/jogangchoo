@@ -12,16 +12,31 @@ def save_like(user_id, lecture_id):
 		return None;
 
 	db = get_db();
-	query = {"user_id": user_id, "lecture_id": lecture_id};
+	find_query = {"user_id": user_id, "lecture_id": lecture_id};
+	
+	if db.find_one(query):
+		ret = db.update_one(find_query, {"like": {"$set": True}});
+		return (ret);
+	query = find_query;
+	query["like"] = True;
 	ret = db.insert_one(query);
 	return (ret.inserted_id);
-	
+
 def find_many(user_id = None, lecture_id = None):
 	if not any([user_id, lecture_id]):
 		return None;
-
 	db = get_db();
 	query = {"user_id": user_id} if user_id else {"lecture_id": lecture_id}
 	contraint = {"lecture_id": True} if user_id else {"user_id": True}
 	ret = db.find(query, contraint);
 	return (ret);
+
+def	unlike(user_id, lecture_id):
+	if not all([user_id, lecture_id]):
+		return None;
+	db = get_db();
+	query = {"user_id": user_id, "lecture_id": lecture_id, "like": True};
+	ret = db.update_one(query, {"like": {"$set": False}});
+
+	return (ret.inserted_id);
+	
