@@ -174,3 +174,11 @@ a > button:hover {
   margin-left: 15px;
   color: #EC4D36
 }
+
+.footer{
+  height : 300px;
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

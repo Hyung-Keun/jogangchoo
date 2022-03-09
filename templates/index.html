@@ -30,7 +30,7 @@
             width: 100%;
             height: 250px;
 
-            background-color : #1D1B1B;
+            background-color: #1D1B1B;
 
             display: flex;
             flex-direction: column;
@@ -91,9 +91,8 @@
 
         .mini_nav > div a:last-of-type {
             margin-left: 15px;
-            color : #EC4D36
+            color: #EC4D36
         }
-
 
 
         .mycards {
@@ -102,19 +101,19 @@
             max-width: 1200px;
         }
 
-        .check_wrap{
+        .check_wrap {
 
-            height : 100px;
+            height: 100px;
 
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
         }
-        main{
-            height : 1000px
-        }
 
+        main {
+            height: 1000px
+        }
 
 
     </style>
@@ -122,7 +121,7 @@
 
     <script>
         login_status = ("{{ login_status }}")
-        console.log("로그인 상태", "login_status", login_status, typeof(login_status))
+        console.log("로그인 상태", "login_status", login_status, typeof (login_status))
 
         $(document).ready(function () {
             // 로그인 된 상태라면
@@ -139,7 +138,7 @@
 
             }
             get_posts()
-         });
+        });
 
         function get_posts(username) {
             if (username == undefined) {
@@ -177,10 +176,6 @@
                                                 <img src="${image}"
                                                      class="card-img-top">
                                                 <p>
-                                                    {##}
-                                                    {#if(${front} == true{#}
-                                                    {#   ${front} = "프론트"#}
-
                                                 ${front},${back},${etc}</p>
                                                 </div>
                                                 <div class="card-body">
@@ -201,201 +196,1002 @@
                 })
             }
 
-            function front_toggle_btn() {
-                if ($("#frbtn").hasClass("btn btn-primary")) {
-                    $("#frbtn").removeClass("btn btn-primary");
-                    $("#frbtn").addClass("btn btn-outline-secondary");
-
-                } else {
-                    $("#frbtn").removeClass("btn btn-outline-secondary");
-                    $("#frbtn").addClass("btn btn-primary");
-
-                }
-            }
 
             //프론트엔드 체크박스 동작
             $(document).ready(function () {
-                $("#frontCheck").change(function () {
-                    if ($("#frontCheck").is(":checked")) {
+                    $("#frontCheck").change(function () {
 
-                        $.ajax({
-                            type: 'GET',
-                            url: '/lecture/front',
-                            data: {},
-                            success: function (response) {
-                                let rows = response['lectures']
-                                $('#cards-box').empty()
+                            $('#cards-box').empty()
 
-                                for (let i = 0; i < rows.length; i++) {
-                                    let url = rows[i]['url']
-                                    let comment = rows[i]['comment']
-                                    let title = rows[i]['title']
-                                    let image = rows[i]['image']
-                                    let category = rows[i]['category']
+                            if ($("#frontCheck").is(":checked")) {
 
+                                // 프
+                                if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
 
-                                    let temp_html = `<div class="col">
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "true") {
+
+                                                    let temp_html = `<div class="col">
                                             <div class="card h-95">
                                                 <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
                                                 <img src="${image}"
                                                      class="card-img-top">
-                                                <p>${category}</p>
+                                                <p>
+                                                ${front},${back},${etc}</p>
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
-                                                    <p class="mycomment">${comment}</p>
-                                                </div>
-                                            </div>
-                                        </div>`
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
 
 
-                                    $('#front-box').append(temp_html)
+                                                    $('#cards-box').append(temp_html)
 
-                                }
-                            }
-                        })
-                    } else {
-                        if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
-                            $('#front-box').empty()
-                            listing()
-                        } else {
-                            $('#front-box').empty()
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
 
 
-                        }
-                    }
+                                    //프백
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
 
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
 
-                });
-            });
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
 
-
-            //백엔드 체크박스 동작
-            $(document).ready(function () {
-                $("#backCheck").change(function () {
-                    if ($("#backCheck").is(":checked")) {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/lecture/back',
-                            data: {},
-                            success: function (response) {
-                                let rows = response['lectures']
-
-                                $('#cards-box').empty()
-
-                                for (let i = 0; i < rows.length; i++) {
-                                    let url = rows[i]['url']
-                                    let comment = rows[i]['comment']
-                                    let title = rows[i]['title']
-                                    let image = rows[i]['image']
-                                    let category = rows[i]['category']
-
-                                    let temp_html = `<div class="col">
-                                                    <div class="card h-95">
-                                                        <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
-                                                        <img src="${image}"
-                                                             class="card-img-top">
-                                                        <p>${category}</p>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">${title}</h5>
-                                                            <p class="mycomment">${comment}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>`
-
-
-                                    $('#back-box').append(temp_html)
-
-                                }
-                            }
-                        })
-                    } else {
-                        if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
-                            $('#back-box').empty()
-                            listing()
-                        } else {
-                            $('#back-box').empty()
-
-
-                        }
-                    }
-                });
-            });
-
-
-            //기타 체크박스 동작
-            $(document).ready(function () {
-                $("#etcCheck").change(function () {
-                    if ($("#etcCheck").is(":checked")) {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/lecture/etc',
-                            data: {},
-                            success: function (response) {
-                                let rows = response['lectures']
-                                $('#cards-box').empty()
-
-                                for (let i = 0; i < rows.length; i++) {
-                                    let url = rows[i]['url']
-                                    let comment = rows[i]['comment']
-                                    let title = rows[i]['title']
-                                    let image = rows[i]['image']
-                                    let category = rows[i]['category']
-
-                                    let temp_html = `<div class="col">
+                                                if (front == "false" && back == "false" && etc == "true") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
                                             <div class="card h-95">
                                                 <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
                                                 <img src="${image}"
                                                      class="card-img-top">
-                                                <p>${category}</p>
+                                                <p>
+                                                ${front},${back},${etc}</p>
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
-                                                    <p class="mycomment">${comment}</p>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프기
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "false" && back == "true" && etc == "false") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
                                                 </div>
-                                            </div>
-                                        </div>`
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
 
 
-                                    $('#etc-box').append(temp_html)
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백기
+                                } else {
+                                    listing()
                                 }
+
+                                //프론트 버튼 꺼졌을 때
+                            } else {
+                                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "true" && back == "false" && etc == "false") {
+                                                    continue
+                                                } else {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (back == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (etc == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else {
+                                    $('#cards-box').empty()
+                                    listing()
+                                }
+
                             }
-                        })
-                    } else {
-                        if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
-                            $('#etc-box').empty()
-                            listing()
-                        } else {
-                            $('#etc-box').empty()
-
-
                         }
-                    }
-                });
-            });
+                    )
+                }
+            );
+
+
+            //백엔드 체크 박스 동작
+            $(document).ready(function () {
+                    $("#backCheck").change(function () {
+
+                            $('#cards-box').empty()
+
+                            if ($("#backCheck").is(":checked")) {
+
+                                // 백
+                                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (back == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "false" && back == "false" && etc == "true") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //백기
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "true" && back == "false" && etc == "false") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백기
+                                } else {
+                                    listing()
+                                }
+
+                                //백엔드 버튼 꺼졌을 때
+                            } else {
+                                if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "false" && back == "true" && etc == "false") {
+                                                    continue
+                                                } else {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
+
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (etc == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else {
+                                    $('#cards-box').empty()
+                                    listing()
+                                }
+
+                            }
+                        }
+                    )
+                }
+            );
+
+
+            //기타 체크 박스 동작
+            $(document).ready(function () {
+                    $("#etcCheck").change(function () {
+
+                            $('#cards-box').empty()
+
+                            if ($("#etcCheck").is(":checked")) {
+
+                                // 기
+                                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (etc == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프기
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "false" && back == "true" && etc == "false") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //백기
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "true" && back == "false" && etc == "false") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백기
+                                } else {
+                                    listing()
+                                }
+
+                                //기타 버튼 꺼졌을 때
+                            } else {
+                                if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "false" && back == "false" && etc == "true") {
+                                                    continue
+                                                } else {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
+
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (front == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+
+                                                if (back == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <p>
+                                                ${front},${back},${etc}</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="mycomment">${comment}</p>`
+                                                    if (author_id) {
+                                                        temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                                                    } else {
+                                                        temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                                                    }
+                                                    temp_html = temp_html.concat(`</div></div></div>`)
+
+
+                                                    $('#cards-box').append(temp_html)
+
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else {
+                                    $('#cards-box').empty()
+                                    listing()
+                                }
+
+                            }
+                        }
+                    )
+                }
+            );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         }
 
-    {##}
-    {#function input_lecture2() {#}
-    {#   const array = Array();#}
-    {#   let send_cnt =0;#}
-    {#   const chkbox = $(".form-check-input")#}
-    {##}
-    {#   for(i=0; i<chkbox.length; i++){#}
-    {#       if(chkbox[i].checked == true){#}
-    {#           array[send_cnt] = chkbox[i].value#}
-    {##}
-    {#           send_cnt++#}
-    {#       }#}
-    {#   }#}
-    {#   console.log(array.join(","))#}
-    {#   return array.join(",")#}
-    {##}
-    {# }#}
-    {#function goPage() { location.href="/"; }#}
-    {##}
+
+
 
 
     </script>
@@ -444,32 +1240,23 @@
 
 
     <div class="mycards">
-        <p class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-        </p>
-
-        <p class="row row-cols-1 row-cols-md-4 g-4" id="front-box">
-        </p>
-
-        <p class="row row-cols-1 row-cols-md-4 g-4" id="back-box">
-        </p>
-
-        <p class="row row-cols-1 row-cols-md-4 g-4" id="etc-box">
-        </p>
-
-        <p class="row row-cols-1 row-cols-md-4 g-4" id="front+back_box">
-        </p>
-
-        <p class="row row-cols-1 row-cols-md-4 g-4" id="back+front_box">
-        </p>
-
-        <p class="row row-cols-1 row-cols-md-4 g-4" id="etc-box">
-        </p>
-
-
+        <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+        </div>
 
     </div>
 
     </main>
+
+       <footer class="footer">
+          <nav>
+              <a href='https://github.com/hyjune92/jogangchoo' target='_blank'>Github</a>
+          </nav>
+          <p>
+              <span>항해 99</span><br/>
+              <span>이메일 : cocoder16@gmail.com</span><br/>
+              <span>Copyright 2020. cocoder. All Rights Reserved.</span>
+          </p>
+      </footer>
 
 </body>
 </html>
