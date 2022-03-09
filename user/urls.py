@@ -57,6 +57,8 @@ def logout():
 		response.set_cookie("Authorization", "", max_age = 0);
 		return response;
 
+from .like import find_many as find_likes
+
 @bp.route("info/", methods=["GET"])
 def user_detail():
 	auth_token = get_request_cookie(request)
@@ -64,7 +66,8 @@ def user_detail():
 		payload = decode_token(auth_token);
 		user_id = payload["user_id"];
 		user_email = payload["user_email"];
-		return jsonify({"_id": user_id, "email": user_email});
+		user_likes = list(find_likes(user_id = user_id)); 
+		return jsonify({"_id": user_id, "email": user_email, "likes": user_likes});
 	else:
 		return jsonify({"_id": "", "email": ""});
 
