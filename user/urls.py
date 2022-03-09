@@ -9,6 +9,7 @@ from .auth import (
 	gen_hashpw,  check_password, set_response_cookie, unset_reponse_cookie, check_input_valid, get_request_cookie, decode_token, create_token, get_user_id_name_email
 )
 from .decorators import login_required, logout_required
+from .like import do_like
 
 bp = Blueprint('user', __name__, template_folder='templates');
 
@@ -63,27 +64,20 @@ from .like import find_many as find_likes
 
 @bp.route("info/", methods=["GET"])
 @login_required
-def user_detail():
+def detail():
 	auth_token = get_request_cookie(request)
 	if auth_token:
-		payload = decode_token(auth_token);
-		user_id = payload["user_id"];
-		user_email = payload["user_email"];
+		user_id, user_name, user_email = get_user_id_name_email(request)
 		user_likes = list(find_likes(user_id = user_id)); 
-		return jsonify({"_id": user_id, "email": user_email, "likes": user_likes});
+		return jsonify({"_id": user_id, "email": user_email, "name": user_name, "likes": user_likes});
 	else:
 		return jsonify({"err":True, "msg": "invalid_token!"});
 
-@bp.route("mypage/", methods=["GET"])
+@bp.route("like/<lecture_id>/", methods=["GET","POST"])
 @login_required
-def mypage():
-	auth_token = get_request_cookie(request);
-	if auth_token:
-		payload = decode_token(auth_token);
-		user_id = payload["user_id"];
-		user_email = payload["user_email"];
-		user_likes = list(find_likes(user_id = user_id)); 
-		return jsonify({"_id": user_id, "email": user_email, "likes": user_likes});
-	else:
-		return jsonify({"err":True, "msg": "invalid_token!"});
-
+def like_toggle(lecture_id):
+	user_id, _, _  = get_user_id_name_email(request)
+	ret = do_like(user_id, lecture_id);
+	if ret:
+		return (jsonify({"msg": "success"}));
+	return (jsonify({"msg": "failed", "err": True}));

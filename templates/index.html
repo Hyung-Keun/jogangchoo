@@ -1,15 +1,60 @@
 {% extends "base.html"%}
 {%block script%}
 <script>
-login_status = ("{{ login_status }}")
-console.log("로그인 상태", "login_status", login_status, typeof(login_status))
+function like(lecture_id) {
+	$.ajax({
+		type: 'POST',
+		url: `/user/like/${lectuer_id}`,
+		data: {
+		},
+		success: function (response) {
+			if (response["err"]) {
+				window.alert("like failed!");
+			} else {
+				window.alert("like success!");
+				get_user_info();
+			}
+		},
+		fail: function(...err) {
+			console.log(err);
+		},
+	});
+}
 
+
+function get_login_user_info() {
+	$.ajax({
+		type: 'GET',
+		url: "/user/info/",
+		data: {},
+		success: function (response) {
+			if (response["err"]) {
+				window.alert("not login user");
+			} else {
+				let user_id = response["_id"]
+				let likes = response["likes"]
+				console.log("user_id:", user_id);
+				likes.map(
+					(el) => {
+						console.log("user like", el["lecture_id"]
+					)});
+			}
+		},
+		fail: function(...err) {
+			console.log(err);
+		},
+	});
+}
+
+login_status = ("{{ login_status }}")
 $(document).ready(function () {
     // 로그인 된 상태라면
     if (login_status == "True") {
+		get_login_user_info();
         // '로그인'버튼에 is-hidden이라는 클래스를 추가한다
         console.log("로그인 버튼 감추기");
         $("#login_button").addClass("d-none");
+		
     }
     // 로그인 안 된 상태라면
     else {
@@ -60,7 +105,13 @@ function get_posts(username) {
                                             <h5 class="card-title">${title}</h5>
                                             <p class="mycomment">${comment}</p>`
                     if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p>작성자 : {{username}}</p>`)
+						{% else %}
                         temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+						{% endif %}
+
                     } else {
                         temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
                     }
@@ -219,18 +270,15 @@ function get_posts(username) {
                             let temp_html = `<div class="col">
                                     <div class="card h-95">
                                         <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
-                                        <img src="${image}"
-                                             class="card-img-top">
-                                        <p>${category}</p>
+											<img src="${image}" class="card-img-top">
+											<p>${category}</p>
                                         </div>
                                         <div class="card-body">
                                             <h5 class="card-title">${title}</h5>
                                             <p class="mycomment">${comment}</p>
                                         </div>
-                                    </div>
-                                </div>`
-
-
+									</div>
+                                </div>`;
                             $('#etc-box').append(temp_html)
                         }
                     }
@@ -249,6 +297,10 @@ function get_posts(username) {
     });
 
 }
+
+
+
+
 </script>
 
 {%endblock%}
@@ -261,11 +313,11 @@ function get_posts(username) {
             </a>
             <div class="mini_nav">
                 <div class="log-out">
-				{% if not login_status %}
-                    <a href={{ url_for("user.login") }} id="login_button">로그인</a>
+				{% if login_status %}
+                	<a href={{ url_for("user.logout") }} id="mypage_button">logout</a>
 				{% else %}
-                    <!--<a href={{ url_for("user.mypage") }} id="mypage_button">마이페이지</a></div>-->
-                    <a href={{ url_for("user.logout") }} id="mypage_button">logout</a></div>
+					<a href={{ url_for("user.login") }} id="login_button">로그인</a>
+					<a href={{ url_for("user.create_view") }} id="signup_button">회원가입</a>
 				{% endif %}
             </div>
 
@@ -273,8 +325,6 @@ function get_posts(username) {
             <button class="post">강의 추천하기</button>
             </a>
         </div>
-
-
     </header>
 
     <main>
@@ -319,11 +369,6 @@ function get_posts(username) {
 
         <p class="row row-cols-1 row-cols-md-4 g-4" id="etc-box">
         </p>
-
-
-
     </div>
-
-    </main>
-
+</main>
 {% endblock %}

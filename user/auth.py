@@ -92,9 +92,12 @@ def get_request_cookie(request):
 def get_user_id_name_email(request):
 	cookie = get_request_cookie(request);
 	payload = decode_token(cookie);
-	user_id = payload["user_id"] or None;
-	user_name = payload["user_name"] or None;
-	user_email = payload["user_email"] or None;
-	if not all((user_id, user_name, user_email)):
-		abort(404);
+	if payload:
+		user_id = payload.get("user_id", None);
+		user_name = payload.get("user_name", None);
+		user_email = payload.get("user_email", None);
+		if not all((user_id, user_name, user_email)):
+			abort(404);
+	else:
+			abort(404);
 	return (user_id, user_name, user_email);

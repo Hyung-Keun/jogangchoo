@@ -11,7 +11,7 @@ app.register_blueprint(bp_lecture);
 
 @app.route("/")
 def home():
-	user_name = "익명의 유저"
+	user_name = "방문객"
 	login_status = False
 	if get_request_cookie(request):	
 		user_id, user_name, user_email = get_user_id_name_email(request);

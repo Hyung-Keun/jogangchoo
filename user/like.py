@@ -7,7 +7,7 @@ def get_db():
 	db = client["dbsparta"];
 	return (db.likes);
 
-def save_like(user_id, lecture_id):
+def do_like(user_id, lecture_id):
 	if not all([user_id, lecture_id]):
 		return None;
 
@@ -37,6 +37,5 @@ def	unlike(user_id, lecture_id):
 	db = get_db();
 	query = {"user_id": user_id, "lecture_id": lecture_id, "like": True};
 	ret = db.update_one(query, {"like": {"$set": False}});
-
 	return (ret.inserted_id);
 	
