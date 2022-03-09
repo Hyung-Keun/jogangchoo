@@ -16,29 +16,49 @@
 	<script src={{ url_for("static", filename="js/main.js") }}></script>
     <style>
 
-
-
-
-
     </style>
 	<script>
 
 	function input_lecture() {
+
         let url = $("#url").val()
-		let comment = $("#comment").val()
+        let comment = $("#comment").val()
 
-		$.ajax({
-			type: 'POST',
-			url: '/lecture',
-			data: {url_give : url, comment_give : comment},
-			success: function (response) {
-		        alert(response['msg']);
-                window.location.reload()
+        if($("#inlineCheckbox1").is(':checked')==false && $("#inlineCheckbox2").is(':checked')==false && $("#inlineCheckbox3").is(':checked') == false){
+            alert("강의 카테고리를 한 가지 이상 선택해주세요")
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: '/lecture',
+                traditional : true,
+                data: {url_give: url, comment_give: comment, category_give : input_lecture2()},
+                success: function (response) {
+                    alert(response['msg']);
+                    goPage()
+                },
+                error: alert("유효한 url 주소가 아니야 ")
+            });
+        }
+    }
 
-		    }
-        });
-	}
+    function input_lecture2() {
+        const array = Array();
+        let send_cnt =0;
+        const chkbox = $(".form-check-input")
 
+        for(i=0; i<chkbox.length; i++){
+            if(chkbox[i].checked == true){
+                array[send_cnt] = chkbox[i].value
+
+                send_cnt++
+            }
+        }
+        console.log(array.join(","))
+        return array.join(",")
+
+    }
+    function goPage() { location.href="/"; }
 
 
 
@@ -54,16 +74,16 @@
     url:<input id="url" type="text" class="form-control">
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="front">
         <label class="form-check-label" for="inlineCheckbox1">프론트엔드</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="back">
         <label class="form-check-label" for="inlineCheckbox2">백엔드</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-        <label class="form-check-label" for="inlineCheckbox3">기타</label>
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="etc">
+        <label class="form-check-label" for="inlineCheckbox3">기타(취업 등)</label>
     </div>
 
     <div>
@@ -72,6 +92,5 @@
     </div>
 
 </main>
-</body>
 </body>
 </html>
