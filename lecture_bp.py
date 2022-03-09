@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request
 from lecture_db import (
-	save_lecture, get_lecture_list
+	save_lecture, get_lecture_list, get_front_list, get_back_list, get_etc_list
 )
 import requests
 from bs4 import BeautifulSoup
@@ -48,6 +48,20 @@ def create_lecture_post():
 @bp.route("/lecture", methods=["GET"])
 def create_comment_get():
 	return get_lecture_list("msg");
+
+
+@bp.route("/lecture/front", methods=["GET"])
+def create_front_get():
+	return get_front_list("msg");
+
+@bp.route("/lecture/back", methods=["GET"])
+def create_back_get():
+	return get_back_list("msg");
+
+@bp.route("/lecture/etc", methods=["GET"])
+def create_etc_get():
+	return get_etc_list("msg");
+
 
 
 @bp.route("/lecture/post", methods=["GET"])
