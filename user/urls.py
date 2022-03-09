@@ -1,11 +1,12 @@
 from flask import (
 	jsonify, request, Blueprint, render_template, make_response, session, g
 )
+from bson import objectid
 from .db import (
 	save_one, find_one
 )
 from .auth import (
-	gen_hashpw,  check_password, set_response_cookie, unset_reponse_cookie, check_input_valid, get_request_cookie, decode_token, create_token
+	gen_hashpw,  check_password, set_response_cookie, unset_reponse_cookie, check_input_valid, get_request_cookie, decode_token, create_token, get_user_id_name_email
 )
 from .decorators import login_required, logout_required
 
@@ -41,7 +42,7 @@ def login():
 		if not check_password(user["password"], request.form["password"]):
 			return jsonify({"msg": "password check error"});
 
-		user_token = create_token(user["_id"], user["email"]);
+		user_token = create_token(user["_id"], user["username"], user["email"]);
 		json_response = jsonify({"msg": "success", "access_token": user_token});
 		response = set_response_cookie(json_response, user_token, user);
 		return (response);
@@ -50,8 +51,9 @@ def login():
 @login_required
 def logout():
 	if request.method == "GET":
-		user = {"name": "test", "email": "test@test.com"}
-		return render_template("user/logout_form.html", user=user);
+		payload = get_user_id_name_email(request);
+		user_name = payload[1];
+		return render_template("user/logout_form.html", username=user_name);
 	else:
 		response = make_response(jsonify({"msg": "logout"}));
 		response.set_cookie("Authorization", "", max_age = 0);
@@ -70,12 +72,12 @@ def user_detail():
 		user_likes = list(find_likes(user_id = user_id)); 
 		return jsonify({"_id": user_id, "email": user_email, "likes": user_likes});
 	else:
-		return jsonify({"_id": "", "email": ""});
+		return jsonify({"err":True, "msg": "invalid_token!"});
 
 @bp.route("mypage/", methods=["GET"])
 @login_required
 def mypage():
-	auth_token = get_request_cookie(request)
+	auth_token = get_request_cookie(request);
 	if auth_token:
 		payload = decode_token(auth_token);
 		user_id = payload["user_id"];
@@ -83,5 +85,5 @@ def mypage():
 		user_likes = list(find_likes(user_id = user_id)); 
 		return jsonify({"_id": user_id, "email": user_email, "likes": user_likes});
 	else:
-		return jsonify({"_id": "", "email": ""});
+		return jsonify({"err":True, "msg": "invalid_token!"});
 

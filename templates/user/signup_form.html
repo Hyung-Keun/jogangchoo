@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {%block script%}
+<script>
 	function signup() {
 		let username, email, password;
 		[username, email, password] = [
@@ -18,14 +19,18 @@
 			url: '/user/',
 			data: user_doc,
 			success: function (response) {
-				console.log(response['msg'] );
-				console.log(response['object'] );
+				if (response["err"]) {
+					window.alert(response["msg"]);
+				} else {
+					window.location.replace("{{url_for("user.login")}}");
+				}
 			},
 			err: function(...err) {
 				alert(err);
 			}
 		});
 	}
+</script>
 {%endblock%}
 {%block header%}
 <h1>가입하기</h1>

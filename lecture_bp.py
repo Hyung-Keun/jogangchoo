@@ -8,7 +8,8 @@ from flask import (
 	jsonify
 )
 
-from user.auth import get_request_cookie, decode_token
+from user.auth import get_request_cookie, decode_token, get_user_id_name_email
+from user.decorators import login_required, logout_required
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://test:sparta@cluster0.ir1di.mongodb.net/Cluster0?retryWrites=true&w=majority')
@@ -16,16 +17,11 @@ db = client["dbsparta"];
 bp = Blueprint('lecture', __name__, template_folder='templates');
 
 @bp.route("/lecture", methods=["POST"])
+@login_required
 def create_lecture_post():
 	url_receive = request.form["url_give"]
 	comment_recieve = request.form["comment_give"]
 	category_recieve = request.form["category_give"]
-
-	token = decode_token(get_request_cookie(request))
-	user_id = token["user_id"]
-	user_email = token["user_email"]
-
-
 	headers = {
 		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
 	data = requests.get(url_receive, headers=headers)
@@ -35,13 +31,15 @@ def create_lecture_post():
 	title = soup.select_one('meta[property="og:title"]')['content']
 	image = soup.select_one('meta[property="og:image"]')['content']
 
+	user_id, user_name, _ = get_user_id_name_email(request);
 	lecture_doc = {
 		"url" : url_receive,
 		"title" : title,
 		"image" : image,
 		"comment" : comment_recieve,
 		"category" : category_recieve,
-		"author_id" : user_id
+		"author_id" : user_id,
+		"author_name" : user_name
 	}
 
 	if save_lecture(lecture_doc) == True:
@@ -54,7 +52,6 @@ def create_lecture_post():
 @bp.route("/lecture", methods=["GET"])
 def create_comment_get():
 	return get_lecture_list("msg");
-
 
 @bp.route("/lecture/front", methods=["GET"])
 def create_front_get():
@@ -80,9 +77,8 @@ def create_frontetc():
 def create_backetc_get():
 	return get_backetc_list("msg");
 
-
-
 @bp.route("/lecture/post", methods=["GET"])
+@login_required
 def create_lecture_get():
 	return render_template("lecture_post.html")
 
