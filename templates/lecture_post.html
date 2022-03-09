@@ -24,15 +24,17 @@
         let url = $("#url").val()
         let comment = $("#comment").val()
 
-        if($("#inlineCheckbox1").is(':checked')==false && $("#inlineCheckbox2").is(':checked')==false && $("#inlineCheckbox3").is(':checked') == false){
+        if($("#frontend_checkbox").is(':checked')==false && $("#backend_checkbox").is(':checked')==false && $("#etc_checkbox").is(':checked') == false){
             alert("강의 카테고리를 한 가지 이상 선택해주세요")
         }
         else {
+
+            let [fr, bk, etc] = [$("#frontend_checkbox").is(':checked'), $("#backend_checkbox").is(':checked'), $("#etc_checkbox").is(':checked')]
             $.ajax({
                 type: 'POST',
                 url: '/lecture',
                 traditional : true,
-                data: {url_give: url, comment_give: comment, category_give : input_lecture2()},
+                data: {url_give: url, comment_give: comment, front_give : fr, back_give : bk, etc_give : etc},
                 success: function (response) {
                     alert(response['msg']);
                     goPage()
@@ -43,20 +45,8 @@
     }
 
     function input_lecture2() {
-        const array = Array();
-        let send_cnt =0;
-        const chkbox = $(".form-check-input")
-
-        for(i=0; i<chkbox.length; i++){
-            if(chkbox[i].checked == true){
-                array[send_cnt] = chkbox[i].value
-
-                send_cnt++
-            }
-        }
-        console.log(array.join(","))
-        return array.join(",")
-
+        let [fr, bk, etc] = [$("#frontend_checkbox").checked, $("#backend_checkbox").checked, $("#etc_checkbox").checked]
+        return [fr, bk, etc]
     }
     function goPage() { location.href="/"; }
 
@@ -74,15 +64,15 @@
     url:<input id="url" type="text" class="form-control">
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="front">
+        <input class="form-check-input" type="checkbox" id="frontend_checkbox" value="front">
         <label class="form-check-label" for="inlineCheckbox1">프론트엔드</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="back">
+        <input class="form-check-input" type="checkbox" id="backend_checkbox" value="back">
         <label class="form-check-label" for="inlineCheckbox2">백엔드</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="etc">
+        <input class="form-check-input" type="checkbox" id="etc_checkbox" value="etc">
         <label class="form-check-label" for="inlineCheckbox3">기타(취업 등)</label>
     </div>
 

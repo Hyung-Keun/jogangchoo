@@ -165,8 +165,10 @@
                             let comment = rows[i]['comment']
                             let title = rows[i]['title']
                             let image = rows[i]['image']
-                            let category = rows[i]['category']
                             let author_id = rows[i]['author_id']
+                            let front = rows[i]['frontend']
+                            let back = rows[i]['backend']
+                            let etc = rows[i]['etc']
 
 
                             let temp_html = `<div class="col">
@@ -174,7 +176,12 @@
                                                 <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
                                                 <img src="${image}"
                                                      class="card-img-top">
-                                                <p>${category}</p>
+                                                <p>
+                                                    {##}
+                                                    {#if(${front} == true{#}
+                                                    {#   ${front} = "프론트"#}
+
+                                                ${front},${back},${etc}</p>
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
@@ -370,6 +377,25 @@
 
         }
 
+    {##}
+    {#function input_lecture2() {#}
+    {#   const array = Array();#}
+    {#   let send_cnt =0;#}
+    {#   const chkbox = $(".form-check-input")#}
+    {##}
+    {#   for(i=0; i<chkbox.length; i++){#}
+    {#       if(chkbox[i].checked == true){#}
+    {#           array[send_cnt] = chkbox[i].value#}
+    {##}
+    {#           send_cnt++#}
+    {#       }#}
+    {#   }#}
+    {#   console.log(array.join(","))#}
+    {#   return array.join(",")#}
+    {##}
+    {#}#}
+    {#function goPage() { location.href="/"; }#}
+    {##}
 
 
     </script>

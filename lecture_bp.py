@@ -18,12 +18,16 @@ bp = Blueprint('lecture', __name__, template_folder='templates');
 @bp.route("/lecture", methods=["POST"])
 def create_lecture_post():
 	url_receive = request.form["url_give"]
-	comment_recieve = request.form["comment_give"]
-	category_recieve = request.form["category_give"]
+	comment_receive = request.form["comment_give"]
+	front_receive = request.form["front_give"]
+	back_receive = request.form["back_give"]
+	etc_receive = request.form["etc_give"]
 
-	token = decode_token(get_request_cookie(request))
-	user_id = token["user_id"]
-	user_email = token["user_email"]
+
+	#
+	# token = decode_token(get_request_cookie(request))
+	# user_id = token["user_id"]
+	# user_email = token["user_email"]
 
 
 	headers = {
@@ -39,10 +43,13 @@ def create_lecture_post():
 		"url" : url_receive,
 		"title" : title,
 		"image" : image,
-		"comment" : comment_recieve,
-		"category" : category_recieve,
-		"author_id" : user_id
+		"comment" : comment_receive,
+		"frontend" : front_receive,
+		"backend" : back_receive,
+		"etc" : etc_receive,
+		# "author_id" : user_id
 	}
+
 
 	if save_lecture(lecture_doc) == True:
 		msg = "등록 완료!";
