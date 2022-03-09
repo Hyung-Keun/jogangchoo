@@ -1,12 +1,14 @@
 from flask import Blueprint, render_template, request
 from lecture_db import (
-	save_lecture, get_lecture_list, get_front_list, get_back_list, get_etc_list
+	save_lecture, get_lecture_list, get_front_list, get_back_list, get_etc_list, get_frontback_list, get_frontetc_list, get_backetc_list
 )
 import requests
 from bs4 import BeautifulSoup
 from flask import (
 	jsonify
 )
+
+from user.auth import get_request_cookie, decode_token
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://test:sparta@cluster0.ir1di.mongodb.net/Cluster0?retryWrites=true&w=majority')
@@ -16,8 +18,16 @@ bp = Blueprint('lecture', __name__, template_folder='templates');
 @bp.route("/lecture", methods=["POST"])
 def create_lecture_post():
 	url_receive = request.form["url_give"]
-	comment_recieve = request.form["comment_give"]
-	category_recieve = request.form["category_give"]
+	comment_receive = request.form["comment_give"]
+	front_receive = request.form["front_give"]
+	back_receive = request.form["back_give"]
+	etc_receive = request.form["etc_give"]
+
+
+	#
+	# token = decode_token(get_request_cookie(request))
+	# user_id = token["user_id"]
+	# user_email = token["user_email"]
 
 
 	headers = {
@@ -33,10 +43,13 @@ def create_lecture_post():
 		"url" : url_receive,
 		"title" : title,
 		"image" : image,
-		"comment" : comment_recieve,
-		"category" : category_recieve
-
+		"comment" : comment_receive,
+		"frontend" : front_receive,
+		"backend" : back_receive,
+		"etc" : etc_receive,
+		# "author_id" : user_id
 	}
+
 
 	if save_lecture(lecture_doc) == True:
 		msg = "등록 완료!";
@@ -61,6 +74,18 @@ def create_back_get():
 @bp.route("/lecture/etc", methods=["GET"])
 def create_etc_get():
 	return get_etc_list("msg");
+
+@bp.route("/lecture/frontback", methods=["GET"])
+def create_frontback_get():
+	return get_frontback_list("msg");
+
+@bp.route("/lecture/frontetc", methods=["GET"])
+def create_frontetc():
+	return get_frontetc_list("msg");
+
+@bp.route("/lecture/backetc", methods=["GET"])
+def create_backetc_get():
+	return get_backetc_list("msg");
 
 
 
