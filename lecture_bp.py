@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup
 from flask import (
 	jsonify
 )
+
+from user.auth import get_request_cookie, decode_token
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://test:sparta@cluster0.ir1di.mongodb.net/Cluster0?retryWrites=true&w=majority')
@@ -18,6 +20,10 @@ def create_lecture_post():
 	url_receive = request.form["url_give"]
 	comment_recieve = request.form["comment_give"]
 	category_recieve = request.form["category_give"]
+
+	token = decode_token(get_request_cookie(request))
+	user_id = token["user_id"]
+	user_email = token["user_email"]
 
 
 	headers = {
@@ -34,8 +40,8 @@ def create_lecture_post():
 		"title" : title,
 		"image" : image,
 		"comment" : comment_recieve,
-		"category" : category_recieve
-
+		"category" : category_recieve,
+		"author_id" : user_id
 	}
 
 	if save_lecture(lecture_doc) == True:
@@ -43,6 +49,8 @@ def create_lecture_post():
 	else:
 		msg = "실패";
 	return get_lecture_list(msg);
+
+
 
 
 @bp.route("/lecture", methods=["GET"])

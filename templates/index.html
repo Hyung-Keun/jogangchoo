@@ -115,6 +115,7 @@
                         let title = rows[i]['title']
                         let image = rows[i]['image']
                         let category = rows[i]['category']
+                        let author_id = rows[i]['author_id']
 
 
                         let temp_html = `<div class="col">
@@ -126,10 +127,13 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
-                                                    <p class="mycomment">${comment}</p>
-                                                </div>
-                                            </div>
-                                        </div>`
+                                                    <p class="mycomment">${comment}</p>`
+                        if(author_id){
+                            temp_html = temp_html.concat(`<p>작성자 : ${author_id}</p>`)
+                        }else{
+                            temp_html = temp_html.concat(`<p>작성자 : 익명 유저 </p>`)
+                        }
+                         temp_html = temp_html.concat(`</div></div></div>`)
 
 
                         $('#cards-box').append(temp_html)
