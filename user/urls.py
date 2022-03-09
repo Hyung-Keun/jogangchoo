@@ -66,5 +66,5 @@ def user_detail():
 		user_email = payload["user_email"];
 		return jsonify({"_id": user_id, "email": user_email});
 	else:
-		return jsonify("_id": "", "email": ""});
+		return jsonify({"_id": "", "email": ""});
 
