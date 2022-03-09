@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from .auth import check_password, create_token
 from .secret import DB_KEY
 
 def get_db():
@@ -6,15 +7,29 @@ def get_db():
 	db = client["dbsparta"];
 	return (db.users);
 
-def save_one(user_doc):
-	user_db = get_db();
-	user_id = user_db.insert_one(user_doc).inserted_id
-	return (user_id);
+def save_one(username = None, password = None, email = None):
+	if not all([username, password, email]):
+		return (None);
 
-def find_one(query = {}, with_id = False):
 	user_db = get_db();
-	return (user_db.find_one(query, {"_id" : with_id}));
+	if user_db.find_one({"email": email}):
+		print("email already registered");
+		return (None);
 
-def find_many(query = {}, with_id = False):
+	query = {
+		"username": username,
+		"password": password,
+		"email": email
+	};
+
+	inserted = user_db.insert_one(query)
+	return (inserted.inserted_id);
+
+def find_one(query = {}, with_id = True):
 	user_db = get_db();
-	return (user_db.find(query, {"_id" : with_id}));
+	return (user_db.find_one(query)) if with_id else (user_db.find_one(query, {"_id" : False}));
+
+def find_many(query = {}, with_id = True):
+	user_db = get_db();
+	return (user_db.find(query)) if with_id else (user_db.find(query, {"_id" : False}));
+
