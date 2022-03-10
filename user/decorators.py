@@ -13,11 +13,6 @@ def login_required(url_func):
 				payload = None;
 			if not payload:
 				return Response(status=401);
-			"""
-			user_id = payload["user_id"];
-			if user_id:
-				g.user = find_one({"_id": user_id});
-			"""
 		else:
 			return redirect(url_for("user.login"));
 		return url_func(*args, **kwargs);
@@ -34,8 +29,7 @@ def logout_required(url_func):
 				payload = None;
 			if not payload:
 				return url_func(*args, **kwargs);
-			else:
-				return redirect(url_for("user.logout"));
+			return redirect(url_for("user.logout"));
 		return url_func(*args, **kwargs);
 	return check_login
 
