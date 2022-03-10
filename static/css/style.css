@@ -244,7 +244,7 @@ footer {
 }
 
 .mytitle > a > button {
-    width: 150px;
+    width: 180px;
     height: 50px;
 
     background-color: transparent;
@@ -257,7 +257,7 @@ footer {
 }
 
 .mytitle > a > button:hover {
-    width: 150px;
+    width: 180px;
     height: 50px;
 
     font-weight: bolder;
@@ -270,8 +270,10 @@ footer {
 
     margin-top: 10px;
 }
+#logo{
+width : 250px;
+margin : 10px auto 20px auto;
 
-.logo {
 }
 
 .mini_nav > div {
@@ -320,5 +322,16 @@ footer {
 
 main {
     height: 1000px
+}
+
+@font-face {
+    font-family: 'Cafe24Dangdanghae';
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1 {
+  font-family: Cafe24Dangdanghae, sans-serif;
+  font-weight: 200; /* ? */
 }
 

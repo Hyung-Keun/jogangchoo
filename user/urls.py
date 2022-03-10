@@ -39,6 +39,7 @@ def login():
         return render_template("user/login_form.html");
 
     elif request.method == "POST":
+
         user = find_one({"email": request.form["email"]});
         if not user:
             return jsonify({"msg": "wrong mail"});

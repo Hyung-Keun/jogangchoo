@@ -36,10 +36,12 @@
                 url: '/user/login/',
                 data: user_doc,
                 success: function (response) {
-                    console.log("성공")
-                    console.log(response['msg']);
-                    console.log(response['access_token']);
 
+                    if(response["msg"] == "success"){
+                        window.location.replace("{{ url_for("home") }}")
+                    }else{
+                        window.alert(response["msg"])
+                    }
                 },
                 err: function (...err) {
                     console.log("실패")
@@ -125,7 +127,7 @@
             <p>
                 <span>항해99 6기 D반 10조</span><br/>
                 <span>한지훈   |   강형근   |   황연준</span><br/>
-                <span>Has No Copyright 2022. johgangchu. All Rights Is Yours.</span>
+                <span>Has No Copyright 2022. johgangchu. All Rights Are Yours.</span>
             </p>
         </div>
     </div>

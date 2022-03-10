@@ -20,7 +20,7 @@
 	<script>
 
 	function input_lecture() {
-
+        console.log("asd")
         let url = $("#url").val()
         let comment = $("#comment").val()
 
@@ -36,10 +36,19 @@
                 traditional : true,
                 data: {url_give: url, comment_give: comment, front_give : fr, back_give : bk, etc_give : etc},
                 success: function (response) {
-                    alert(response['msg']);
-                    goPage()
+
+
+                    if(response["msg"] == "등록 완료!"){
+                        window.alert(response["msg"])
+                        window.location.replace("{{ url_for("home") }}")
+                    }else{
+                        window.alert(response["msg"])
+                    }
                 },
-                error: alert("유효한 url 주소가 아니야 ")
+                err: function (...err) {
+                    console.log("실패")
+                    alert(err);
+                }
             });
         }
     }
@@ -62,12 +71,7 @@
         <a href="/">
             <h1 class="logo">좋강추</h1>
         </a>
-        <div class="mini_nav">
-            <div class="log-out">
-                <a href="/login" id="login_button">로그인</a>
-            </div>
 
-        </div>
     </div>
 
 </header>
@@ -108,7 +112,7 @@
                       style="height: 200px"></textarea>
             <label for="floatingTextarea2">이래서 추천해요</label>
         </div>
-        <a href="/lecture/post">
+        <a>
             <button class="post" onclick="input_lecture()">추천하기</button>
         </a>
     </div>
@@ -127,7 +131,7 @@
             <p>
                 <span>항해99 6기 D반 10조</span><br/>
                 <span>한지훈   |   강형근   |   황연준</span><br/>
-                <span>Has No Copyright 2022. johgangchu. All Rights Is Yours.</span>
+                <span>Has No Copyright 2022. johgangchu. All Rights Are Yours.</span>
             </p>
         </div>
     </div>
