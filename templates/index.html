@@ -59,11 +59,11 @@
     }
 
     function like_lecture(like_btn) {
-        if (!login_status)
+        if (login_status === false) {
             alert("로그인이 필요합니다")
             window.location.replace("{{ url_for("user.login") }}");
-
-        let lecture_id = $(like_btn).data("lecture-id");
+        } else {
+             let lecture_id = $(like_btn).data("lecture-id");
         $.ajax({
             type: 'GET',
             url: `/user/like/${lecture_id}/`,
@@ -81,6 +81,11 @@
                 console.log(err);
             },
         });
+
+        }
+
+
+
     }
 
     function toggle_like_btn(to_inactive, to_active)
