@@ -14,7 +14,15 @@ def save_lecture(lecture_doc):
 
 def get_lecture_list(msg):
 	lecture_doc = {};
-	all_lecture = list(db.lectures.find(lecture_doc, {"_id" : False}).sort('_id',-1));
+	all_lecture = list(db.lectures.find(lecture_doc).sort('_id',-1));
+
+
+	list(
+		map(
+			lambda el: el.update({"_id": str(el["_id"])}),
+			all_lecture
+		)
+	);
 
 	return jsonify({"msg":msg ,"lectures": all_lecture});
 

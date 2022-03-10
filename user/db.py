@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from .auth import check_password, create_token
 from .secret import DB_KEY
 
@@ -27,6 +28,8 @@ def save_one(username = None, password = None, email = None):
 
 def find_one(query = {}, with_id = True):
 	user_db = get_db();
+	if query.get("_id", None):
+		query["_id"] = ObjectId(query["_id"]);
 	return (user_db.find_one(query)) if with_id else (user_db.find_one(query, {"_id" : False}));
 
 def find_many(query = {}, with_id = True):
