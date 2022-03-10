@@ -22,68 +22,37 @@
 
 
     <script>
-        function signup_check() {
-            let username = $("#username").val();
-            let email = $("#email").val();
-            let password = $("#password").val();
-            let password_confirm = $("#password_confirm").val();
-
-            if (email == "") {
-                alert("이메일 입력해주세요!")
-                $("#email").val().focus()
-                return false;
-            }
-            if (username == "") {
-                alert("사용자이름을 입력해주세요!")
-                $("#email").val().focus()
-                return false;
-            }
-            if (password == "") {
-                alert("비밀번호를 입력해주세요!");
-                $("#password").focus()
-                return false;
-            }
-            if (password_confirm != password) {
-                alert("비밀번호가 일치하지 않습니다! 다시한번 확인해주세요!");
-                $("#password_confirm").focus()
-                return false;
-            }
-            return true
-        }
-
         function signup() {
-            if (signup_check()) {
-                let username, email, password;
-                [username, email, password] = [
-                    $("#username").val(),
-                    $("#email").val(),
-                    $("#password").val()
-                ];
-                console.log(username, email, password);
-                user_doc = {
-                    username: username,
-                    email: email,
-                    password: password
-                };
-                $.ajax({
-                    type: 'POST',
-                    url: '/user/',
-                    data: user_doc,
-                    success: function (response) {
-                        if (response["err"]) {
-                            window.alert(response["msg"]);
-                        } else {
-                            window.location.replace("{{url_for("user.login")}}");
-                            alert("회원가입이 완료되었습니다.")
-
-                        }
-                    },
-                    err: function (...err) {
-                        alert(err);
+            let username, email, password;
+            [username, email, password] = [
+                $("#username").val(),
+                $("#email").val(),
+                $("#password").val()
+            ];
+            console.log(username, email, password);
+            user_doc = {
+                username: username,
+                email: email,
+                password: password
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/user/',
+                data: user_doc,
+                success: function (response) {
+                    if (response["err"]) {
+                        window.alert(response["msg"]);
+                    } else {
+                        window.location.replace("{{url_for("user.login")}}");
+                        alert("회원가입이 완료되었습니다.")
                     }
-                });
-            }
+                },
+                err: function (...err) {
+                    alert(err);
+                }
+            });
         }
+
 
         login_status = ("{{ login_status }}")
         console.log("로그인 상태", "login_status", login_status, typeof (login_status))
@@ -115,6 +84,11 @@
         <a href="/">
             <h1 class="logo">좋강추</h1>
         </a>
+        <div class="mini_nav">
+            <div class="log-out">
+                <a href="/login" id="login_button">로그인</a>
+            </div>
+        </div>
 
     </div>
 </header>
@@ -131,18 +105,18 @@
 
     <div class="input-group mb-3">
 
-        <input id="password" type="password" class="form-control" placeholder="비밀번호" aria-label="Username"
+        <input id="password" type="text" class="form-control" placeholder="비밀번호" aria-label="Username"
                aria-describedby="basic-addon1">
     </div>
 
     <div class="input-group mb-3">
 
-        <input type="password" class="form-control" placeholder="비밀번호 확인" aria-label="Username"
-               aria-describedby="basic-addon1" id="password_confirm">
+        <input type="text" class="form-control" placeholder="비밀번호 확인" aria-label="Username"
+               aria-describedby="basic-addon1">
     </div>
 
 
-    <a>
+    <a href="/lecture/post">
         <button class="login" onclick="signup()">회원가입</button>
     </a>
 
@@ -158,7 +132,7 @@
         <p>
             <span>항해99 6기 D반 10조</span><br/>
             <span>한지훈   |   강형근   |   황연준</span><br/>
-            <span>Has No Copyright 2022. johgangchu. All Rights Are Yours.</span>
+            <span>Has No Copyright 2022. johgangchu. All Rights Is Yours.</span>
         </p>
     </div>
 </div>
