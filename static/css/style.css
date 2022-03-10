@@ -145,19 +145,19 @@ a > button.post:hover {
 
 
 
-.mini_nav > div {
+.mytitle > .mini_nav > div {
   position: absolute;
-  top: 45px;
+  top: 40px;
   right: 40px;
 }
 
-.mini_nav > div a {
+.mini_nav > div > a {
   color: #EC4D36;
   font-weight: 300;
   font-size: 14px;
 }
 
-.mini_nav > div a:hover {
+.mini_nav > div > a:hover {
   color: #EC4D36;
   font-weight: bolder;
   font-size: 14px;
@@ -243,38 +243,40 @@ footer {
     justify-content: center;
 }
 
-.mytitle > a > button {
-    width: 180px;
-    height: 50px;
 
-    background-color: transparent;
-    color: #EC4D36;
-
-    border-radius: 50px;
-    border: 1px solid #EC4D36;
-
-    margin-top: 10px;
-}
-
-.mytitle > a > button:hover {
-    width: 180px;
-    height: 50px;
-
-    font-weight: bolder;
-
-    background-color: transparent;
-    color: #EC4D36;
-
-    border-radius: 50px;
-    border: 3px solid #EC4D36;
-
-    margin-top: 10px;
-}
 #logo{
 width : 250px;
 margin : 10px auto 20px auto;
 
 }
+
+.mini_nav > a > button {
+    width: 230px;
+    height: 50px;
+    background-color: transparent;
+    color: #EC4D36;
+    border-radius: 50px;
+    border: 1px solid #EC4D36;
+    margin-top: 10px;
+}
+
+.mini_nav > a > button:hover {
+    width: 230px;
+    height: 50px;
+    font-weight: bolder;
+    background-color: transparent;
+    color: #EC4D36;
+    border-radius: 50px;
+    border: 3px solid #EC4D36;
+    margin-top: 10px;
+}
+
+.mini_nav > div {
+    position: absolute;
+    top: 45px;
+    right: 40px;
+}
+
 
 .mini_nav > div {
     position: absolute;
@@ -298,6 +300,8 @@ margin : 10px auto 20px auto;
     margin-left: 15px;
     color: #EC4D36
 }
+
+
 
 
 .mycards {

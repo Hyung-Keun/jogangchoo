@@ -42,9 +42,9 @@ def login():
 
         user = find_one({"email": request.form["email"]});
         if not user:
-            return jsonify({"msg": "wrong mail"});
+            return jsonify({"msg": "입력한 이메일 주소가 존재하지 않습니다."});
         if not check_password(user["password"], request.form["password"]):
-            return jsonify({"msg": "password check error"});
+            return jsonify({"msg": "비밀번호가 틀렸습니다."});
 
         user_token = create_token(user["_id"], user["username"], user["email"]);
         json_response = jsonify({"msg": "success", "access_token": user_token});
