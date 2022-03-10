@@ -51,17 +51,12 @@ def login():
         return (response);
 
 
-@bp.route("logout/", methods=["GET", "POST"])
+@bp.route("logout/", methods=["POST"])
 @login_required
 def logout():
-    if request.method == "GET":
-        payload = get_user_id_name_email(request);
-        user_name = payload[1];
-        return render_template("user/logout_form.html", username=user_name);
-    else:
-        response = make_response(jsonify({"msg": "logout"}));
-        response.set_cookie("Authorization", "", max_age=0);
-        return response;
+    response = make_response(jsonify({"msg": "logout"}));
+    response.set_cookie("Authorization", "", max_age=0);
+    return response;
 
 
 from .like import find_many as find_likes

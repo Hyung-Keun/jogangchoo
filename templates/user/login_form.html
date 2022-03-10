@@ -39,7 +39,9 @@
                     console.log("성공")
                     console.log(response['msg']);
                     console.log(response['access_token']);
-
+                    if(response['msg'] === "success"){
+                        window.location.replace('{{url_for("home")}}');
+                    }
                 },
                 err: function (...err) {
                     console.log("실패")
