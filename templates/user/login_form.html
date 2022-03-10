@@ -37,10 +37,12 @@
                 data: user_doc,
                 success: function (response) {
 
+
                     if(response["msg"] == "success"){
                         window.location.replace("{{ url_for("home") }}")
                     }else{
                         window.alert(response["msg"])
+
                     }
                 },
                 err: function (...err) {

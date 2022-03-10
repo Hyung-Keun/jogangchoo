@@ -62,11 +62,11 @@
     }
 
     function like_lecture(like_btn) {
-        if (!login_status)
+        if (login_status === false) {
             alert("로그인이 필요합니다")
             window.location.replace("{{ url_for("user.login") }}");
-
-        let lecture_id = $(like_btn).data("lecture-id");
+        } else {
+             let lecture_id = $(like_btn).data("lecture-id");
         $.ajax({
             type: 'GET',
             url: `/user/like/${lecture_id}/`,
@@ -84,6 +84,11 @@
                 console.log(err);
             },
         });
+
+        }
+
+
+
     }
 
     function toggle_like_btn(to_inactive, to_active)
@@ -122,19 +127,18 @@
 
     $(document).ready(function () {
 
-        console.log(!login_status)
-        // 로그인 된 상태라면
-        if (!login_status ==true) {
+        if (login_status === true) {
+
             // '로그인'버튼에 is-hidden이라는 클래스를 추가한다
             console.log("로그인 버튼 감추기");
+            console.log($("#login_button"))
             $("#login_button").addClass("d-none");
-
-        }
-        // 로그인 안 된 상태라면
-        else {
+            $("#logout_button").addClass("active");
+        }else {
             console.log("마이페이지 버튼 감추기");
-
+            console.log(login_status);
             $("#mypage_button").addClass("d-none");
+            $("#logout_button").addClass("d-none");
 
         }
         get_posts()
@@ -1410,7 +1414,21 @@
                 }
             );
         }
-
+    function logout() {
+		$.ajax({
+			type: 'POST',
+			url: '/user/logout/',
+			data: {},
+			success: function (response) {
+				console.log("로그아웃진짜하고싶다");
+				console.log(response['msg'] );
+                window.location.replace('{{url_for("home")}}');
+			},
+			err: function(...err) {
+				alert(err);
+			}
+		});
+	}
 
 
     </script>
@@ -1425,9 +1443,9 @@
         </a>
             <div class="mini_nav">
                 <div class="log-out">
-                    <a href="/login" id="login_button">로그인</a>
-                    <a id="logout_button">로그아웃</a></div>
-            </div>
+                     <a href='{{url_for("user.login")}}' id="login_button">로그인</a>
+                    <a id="logout_button" onclick = "logout()">로그아웃</a>
+                </div>
 
             <a href="/lecture/post">
             <button class="post">좋은 강의 추천하기</button>
