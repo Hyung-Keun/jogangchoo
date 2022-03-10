@@ -12,66 +12,121 @@
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href={{ url_for("static", filename="css/jh_style.css") }}>
-	<script src={{ url_for("static", filename="js/main.js") }}></script>
+    <link rel="stylesheet" href="../static/css/style.css"/>
     <style>
-
-
-
 
 
     </style>
 	<script>
 
 	function input_lecture() {
+
         let url = $("#url").val()
-		let comment = $("#comment").val()
+        let comment = $("#comment").val()
 
-		$.ajax({
-			type: 'POST',
-			url: '/lecture',
-			data: {url_give : url, comment_give : comment},
-			success: function (response) {
-		        alert(response['msg']);
-                window.location.reload()
+        if($("#frontend_checkbox").is(':checked')==false && $("#backend_checkbox").is(':checked')==false && $("#etc_checkbox").is(':checked') == false){
+            alert("강의 카테고리를 한 가지 이상 선택해주세요")
+        }
+        else {
 
-		    }
-        });
-	}
+            let [fr, bk, etc] = [$("#frontend_checkbox").is(':checked'), $("#backend_checkbox").is(':checked'), $("#etc_checkbox").is(':checked')]
+            $.ajax({
+                type: 'POST',
+                url: '/lecture',
+                traditional : true,
+                data: {url_give: url, comment_give: comment, front_give : fr, back_give : bk, etc_give : etc},
+                success: function (response) {
+                    alert(response['msg']);
+                    goPage()
+                },
+                error: alert("유효한 url 주소가 아니야 ")
+            });
+        }
+    }
+
+    function input_lecture2() {
+        let [fr, bk, etc] = [$("#frontend_checkbox").checked, $("#backend_checkbox").checked, $("#etc_checkbox").checked]
+        return [fr, bk, etc]
+    }
 
 
+    function goPage() { location.href="/"; }
 
 
     </script>
-	<title>hanghae99 10</title>
+    <title>좋강추</title>
 </head>
 <body>
-<main>
-    <header>
-        <h1>강의 추천하기</h1>
-    </header>
+<header>
+    <div class="mytitle">
+        <a href="/">
+            <h1 class="logo">좋강추</h1>
+        </a>
+        <div class="mini_nav">
+            <div class="log-out">
+                <a href="/login" id="login_button">로그인</a>
+            </div>
 
-    url:<input id="url" type="text" class="form-control">
+        </div>
+    </div>
 
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-        <label class="form-check-label" for="inlineCheckbox1">프론트엔드</label>
+</header>
+
+<div class="wrapper3">
+
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="url" placeholder="name@example.com">
+        <label for="floatingInput">URL을 붙여넣어주세요</label>
     </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-        <label class="form-check-label" for="inlineCheckbox2">백엔드</label>
+
+    <p><br><br>카테고리를 1가지 이상 선택해주세요</p>
+    <div class="input-group">
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="frontend_checkbox" value="front">
+            <label class="form-check-label" for="inlineCheckbox1">프론트엔드</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="backend_checkbox" value="back">
+            <label class="form-check-label" for="inlineCheckbox2">백엔드</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="etc_checkbox" value="etc">
+            <label class="form-check-label" for="inlineCheckbox3">기타(취업 등)</label>
+        </div>
+
     </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-        <label class="form-check-label" for="inlineCheckbox3">기타</label>
-    </div>
+
 
     <div>
-        comment:<input id="comment" style="" type="text" class="form-control">
-        <button onclick="input_lecture()">등록하기</button>
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Leave a comment here" id="comment"
+                      style="height: 200px"></textarea>
+            <label for="floatingTextarea2">이래서 추천해요</label>
+        </div>
+        <a href="/lecture/post">
+            <button class="post" onclick="input_lecture()">추천하기</button>
+        </a>
     </div>
 
-</main>
-</body>
+
+</div>
+
+
+
+<div id='footer_wrapper'>
+        <div>
+            <nav>
+                <a href='https://github.com/hyjune92/jogangchoo' target='_blank'>Github</a>
+            </nav>
+            <br>
+            <p>
+                <span>항해99 6기 D반 10조</span><br/>
+                <span>한지훈   |   강형근   |   황연준</span><br/>
+                <span>Has No Copyright 2022. johgangchu. All Rights Is Yours.</span>
+            </p>
+        </div>
+    </div>
+    <footer></footer>
 </body>
 </html>

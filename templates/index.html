@@ -1,241 +1,3 @@
-{#<!doctype html>#}
-{#<html lang="en">#}
-{##}
-{#<head>#}
-{#    <meta charset="utf-8">#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">#}
-{##}
-{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"#}
-{#          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">#}
-{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"#}
-{#            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"#}
-{#            crossorigin="anonymous"></script>#}
-{##}
-{#    <title>좋은 강의 추천해주세요</title>#}
-{##}
-{#    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">#}
-{##}
-{#    <style>#}
-{#        * {#}
-{#            font-family: 'Gowun Dodum', sans-serif;#}
-{#        }#}
-{##}
-{#        .mytitle {#}
-{#            width: 100%;#}
-{#            height: 250px;#}
-{##}
-{#            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');#}
-{#            background-position: center;#}
-{#            background-size: cover;#}
-{##}
-{#            color: white;#}
-{##}
-{#            display: flex;#}
-{#            flex-direction: column;#}
-{#            align-items: center;#}
-{#            justify-content: center;#}
-{#        }#}
-{##}
-{#        .mytitle > button {#}
-{#            width: 200px;#}
-{#            height: 50px;#}
-{##}
-{#            background-color: transparent;#}
-{#            color: white;#}
-{##}
-{#            border-radius: 50px;#}
-{#            border: 1px solid white;#}
-{##}
-{#            margin-top: 10px;#}
-{#        }#}
-{##}
-{#        .mytitle > button:hover {#}
-{#            border: 2px solid white;#}
-{#        }#}
-{##}
-{#        .mycomment {#}
-{#            color: gray;#}
-{#        }#}
-{##}
-{#        .mycards {#}
-{#            margin: 20px auto 0px auto;#}
-{#            width: 95%;#}
-{#            max-width: 1200px;#}
-{#        }#}
-{##}
-{#        .mypost {#}
-{#            width: 95%;#}
-{#            max-width: 500px;#}
-{#            margin: 20px auto 0px auto;#}
-{#            padding: 20px;#}
-{#            box-shadow: 0px 0px 3px 0px gray;#}
-{##}
-{#            display: none;#}
-{#        }#}
-{##}
-{#        .mybtns {#}
-{#            display: flex;#}
-{#            flex-direction: row;#}
-{#            align-items: center;#}
-{#            justify-content: center;#}
-{##}
-{#            margin-top: 20px;#}
-{#        }#}
-{##}
-{#        .mybtns > button {#}
-{#            margin-right: 10px;#}
-{#        }#}
-{##}
-{##}
-{#        .category{#}
-{#            display: flex;#}
-{#            flex-direction: row;#}
-{#            align-items: center;#}
-{#            justify-content: center;#}
-{#        }#}
-{#    </style>#}
-{#    <script>#}
-{#        $(document).ready(function () {#}
-{#            listing();#}
-{#        });#}
-{##}
-{#        function listing() {#}
-{#            $.ajax({#}
-{#                type: 'GET',#}
-{#                url: '/movie',#}
-{#                data: {},#}
-{#                success: function (response) {#}
-{#                    let rows = response['movies']#}
-{#                    for (let i = 0; i < rows.length; i++) {#}
-{#                        let comment = rows[i]['comment']#}
-{#                        let url = rows[i]['url']#}
-{#                        let title = rows[i]['title']#}
-{#                        let image = rows[i]['image']#}
-{##}
-{##}
-{#                        let temp_html = `<div class="col">#}
-{#                                            <div class="card h-100">#}
-{#                                                <img onclick="location.href='${url}'" src="${image}"#}
-{#                                                     class="card-img-top">#}
-{#                                                <div class="card-body">#}
-{#                                                    <h5 class="card-title">${title}</h5>#}
-{#                                                    <p class="mycomment">${comment}</p>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                        </div>`#}
-{##}
-{#                        $('#cards-box').append(temp_html)#}
-{##}
-{#                    }#}
-{##}
-{#                }#}
-{#            })#}
-{#        }#}
-{##}
-{#        function posting() {#}
-{#            let url = $('#url').val()#}
-{#            let comment = $('#comment').val()#}
-{##}
-{#            $.ajax({#}
-{#                type: 'POST',#}
-{#                url: '/movie',#}
-{#                data: {url_give: url, comment_give: comment},#}
-{#                success: function (response) {#}
-{#                    alert(response['msg'])#}
-{#                    window.location.reload()#}
-{#                }#}
-{#            });#}
-{#        }#}
-{##}
-{#        function open_box() {#}
-{#            $('#post-box').show()#}
-{#        }#}
-{##}
-{#        function close_box() {#}
-{#            $('#post-box').hide()#}
-{#        }#}
-{#    </script>#}
-{#</head>#}
-{##}
-{#<body>#}
-{##}
-{#        <header class="main-header">#}
-{#            <div class="main-header-wrap">#}
-{#                <div class="main-header-container">#}
-{#          로고          #}
-{#                    <a href="/">#}
-{#                        <h1 class="logo">CLASS202</h1>#}
-{#                    </a>#}
-{#          검색창          #}
-{#                    <div class="header-search">#}
-{#                        <form method="GET" action="/search">#}
-{#                            <input type="text" id="hs-input" name="search_give" value=""#}
-{#                                   placeholder="찾으시는 취미가 있으신가요?"/>#}
-{#                            <label for="hs-input"></label>#}
-{#                            <button type="submit">#}
-{#                                <i class="xi-search"></i>#}
-{#                            </button>#}
-{#                        </form>#}
-{#                    </div>#}
-{#          버튼들          #}
-{#                    <div class="header-br">#}
-{#                        <a href="/post_write" class="btn01" id="post_write_button">작성하기</a>#}
-{#                        <a href="/mypage" class="btn02" id="mypage_button">마이페이지</a>#}
-{#                        <a href="/login" class="btn02" id="login_button">로그인</a>#}
-{#                        <a href="/" class="btn02" id="signout_button" onclick="sign_out()">로그아웃</a>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </header>#}
-{##}
-{#<div class="mytitle">#}
-{#    <h1>좋강추</h1>#}
-{#    <button onclick="open_box()">영화 기록하기</button>#}
-{#    <button onclick="">추천하기</button>#}
-{#    <button onclick ="">로그인</button>#}
-{#</div>#}
-{#<div class ="category">#}
-{#    <button onclick="">전체</button>#}
-{#    <button onclick="">프론트엔드</button>#}
-{#    <button onclick="">백엔드</button>#}
-{#    <button onclick="">기타</button>#}
-{##}
-{##}
-{#</div>#}
-{#<div class="mypost" id="post-box">#}
-{#    <div class="form-floating mb-3">#}
-{#        <input id="url" type="email" class="form-control" placeholder="name@example.com">#}
-{#        <label>영화URL</label>#}
-{#    </div>#}
-{#    <div class="input-group mb-3">#}
-{#        <label class="input-group-text" for="inputGroupSelect01">별점</label>#}
-{#        <select class="form-select" id="star">#}
-{#            <option selected>-- 선택하기 --</option>#}
-{#            <option value="1">⭐</option>#}
-{#            <option value="2">⭐⭐</option>#}
-{#            <option value="3">⭐⭐⭐</option>#}
-{#            <option value="4">⭐⭐⭐⭐</option>#}
-{#            <option value="5">⭐⭐⭐⭐⭐</option>#}
-{#        </select>#}
-{#    </div>#}
-{#    <div class="form-floating">#}
-{#        <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>#}
-{#        <label for="floatingTextarea2">코멘트</label>#}
-{#    </div>#}
-{#    <div class="mybtns">#}
-{#        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>#}
-{#        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>#}
-{#    </div>#}
-{#</div>#}
-{#<div class="mycards">#}
-{#    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">#}
-{#    </div>#}
-{#</div>#}
-{#</body>#}
-{##}
-{#</html>#}
-
 <!DOCTYPE html>
 <html lang="en">
 <HEAD>
@@ -255,152 +17,1400 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href={{ url_for("static", filename="css/jh_style.css") }}>
 
     <link rel="stylesheet" href="../static/css/style.css"/>
-    <link rel="stylesheet" href="../static/css/jh_style.css"/>
 
 
     <script src={{ url_for("static", filename="js/main.js") }}></script>
 
     <style>
-        .mytitle {
-            width: 100%;
-            height: 250px;
 
-            background-color : #1D1B1B;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mytitle > a > button {
-            width: 150px;
-            height: 50px;
-
-            background-color: transparent;
-            color: #EC4D36;
-
-            border-radius: 50px;
-            border: 1px solid #EC4D36;
-
-            margin-top: 10px;
-        }
-
-        .mytitle > button:hover {
-            border: 2px solid #EC4D36;
-        }
-
-        .logo {
-            font-size: 90px;
-            color: #EC4D36
-        }
-
-        .mini_nav > div {
-            position: absolute;
-            top: 45px;
-            right: 30px;
-        }
-
-        .mini_nav > div a {
-            color: #EC4D36;
-            font-weight: 300;
-            font-size: 14px;
-        }
-
-        .mini_nav > div a:hover {
-            color: #EC4D36;
-            font-weight: bolder;
-            font-size: 14px;
-        }
-
-        .mini_nav > div a:last-of-type {
-            margin-left: 15px;
-            color : #EC4D36
-        }
-
-
-
-        .mycards {
-            margin: 20px auto 0px auto;
-            width: 95%;
-            max-width: 1200px;
-        }
 
 
     </style>
 
-
     <script>
-        $(document).ready(function () {
-            listing()
+    login_status = ("{{ login_status }}") == "False" ? false : true;
+    function set_liked_lectures() {
+        $.ajax({
+            type: 'GET',
+            url: "/user/info/",
+            data: {},
+            success: function (response) {
+                if (response["err"]) {
+                    console.log("not login user");
+                } else {
+                    let user_id = response["_id"];
+                    console.log("user_id:", user_id);
+                    response["likes"].map(
+                        (el) => {
+                            set_like(el["lecture_id"]);
+                        }
+                    );
+                }
+            },
+            fail: function(...err) {
+                console.log(err);
+            },
         });
+    }
 
-        function listing() {
+    function set_like(lecture_id) {
+        let like_btn = $(`#${lecture_id}`);
+        toggle_like_btn(like_btn, like_btn.next());
+    }
 
-            $.ajax({
-                type: 'GET',
-                url: '/lecture',
-                data: {},
-                success: function (response) {
-                    let rows = response['lectures']
+    function like_lecture(like_btn) {
+        if (!login_status)
+            window.location.replace("{{ url_for("user.login") }}");
+
+        let lecture_id = $(like_btn).data("lecture-id");
+        $.ajax({
+            type: 'GET',
+            url: `/user/like/${lecture_id}/`,
+            data: {
+            },
+            success: function (response) {
+                if (response["err"]) {
+                    console.log("like failed!");
+                } else {
+                    console.log("like success!");
+                    toggle_like_btn(like_btn, $(like_btn).next());
+                }
+            },
+            fail: function(...err) {
+                console.log(err);
+            },
+        });
+    }
+
+    function toggle_like_btn(to_inactive, to_active)
+    {
+        $(to_inactive).removeClass("active")
+        $(to_inactive).addClass("d-none")
+        $(to_active).removeClass("d-none")
+        $(to_active).addClass("active")
+    }
+
+    function unlike_lecture(unlike_btn) {
+        if (!login_status)
+            window.location.replace("{{ url_for("user.login") }}");
+
+        let lecture_id = $(unlike_btn).data("lecture-id");
+        $.ajax({
+            type: 'GET',
+            url: `/user/unlike/${lecture_id}/`,
+            data: {
+            },
+            success: function (response) {
+                if (response["err"]) {
+                    console.log("unlike failed!");
+                } else {
+                    console.log("unlike success!");
+                    toggle_like_btn(unlike_btn, $(unlike_btn).prev());
+                }
+            },
+            fail: function(...err) {
+                console.log(err);
+            },
+        });
+    }
 
 
-                    for (let i = 0; i < rows.length; i++) {
+
+    $(document).ready(function () {
+        // 로그인 된 상태라면
+        if (!login_status) {
+            // '로그인'버튼에 is-hidden이라는 클래스를 추가한다
+            console.log("로그인 버튼 감추기");
+            $("#login_button").addClass("d-none");
+
+        }
+        // 로그인 안 된 상태라면
+        else {
+            console.log("마이페이지 버튼 감추기");
+
+            $("#mypage_button").addClass("d-none");
+
+        }
+        get_posts()
+     });
+
+        function get_posts(username) {
+            if (username == undefined) {
+                username = ""
+            }
 
 
-                        let url = rows[i]['url']
-                        let comment = rows[i]['comment']
-                        let title = rows[i]['title']
-                        let image = rows[i]['image']
+            $(document).ready(function () {
+                listing()
 
-                        let temp_html = `<div class="col">
+            });
+
+            function listing() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/lecture',
+                    data: {},
+                    success: function (response) {
+                        let rows = response['lectures']
+
+                        for (let i = 0; i < rows.length; i++) {
+                            let url = rows[i]['url']
+                            let comment = rows[i]['comment']
+                            let title = rows[i]['title']
+                            let image = rows[i]['image']
+                            let front = rows[i]['frontend']
+                            let back = rows[i]['backend']
+                            let etc = rows[i]['etc']
+                            let author_id = rows[i]['author_id']
+                            let lecture_id = rows[i]['_id']
+                            let author_name = rows[i]['author_name']
+
+                            let temp_html = `<div class="col">
                                             <div class="card h-95">
-                                                <div onclick="window.open('${url}') " style="cursor:pointer" target="_blank">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
                                                 <img src="${image}"
                                                      class="card-img-top">
                                                 </div>
                                                 <div class="card-body">
-                                                    <h5 class="card-title">${title}</h5>
-                                                    <p class="mycomment">${comment}</p>
-                                                </div>
-                                            </div>
-                                        </div>`
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
 
-                        $('#cards-box').append(temp_html)
+             if (author_id) {
 
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
                     }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
                 }
-            })
-        }
-
-        function front_toggle_btn() {
-            if ($("#frbtn").hasClass("btn btn-primary")) {
-                $("#frbtn").removeClass("btn btn-primary");
-                $("#frbtn").addClass("btn btn-outline-secondary");
-
-            } else {
-                $("#frbtn").removeClass("btn btn-outline-secondary");
-                $("#frbtn").addClass("btn btn-primary");
-
+				if (login_status)
+					set_liked_lectures();
             }
+        })
+    }
+
+
+            //프론트엔드 체크박스 동작
+            $(document).ready(function () {
+                    $("#frontCheck").change(function () {
+
+                            $('#cards-box').empty()
+
+                            if ($("#frontCheck").is(":checked")) {
+
+                                // 프
+                                if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                } if (login_status)
+					set_liked_lectures();
+                                                else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "false" && back == "false" && etc == "true") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                    //프기
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "false" && back == "true" && etc == "false") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백기
+                                } else {
+                                    listing()
+                                }
+
+                                //프론트 버튼 꺼졌을 때
+                            } else {
+                                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "true" && back == "false" && etc == "false") {
+                                                    continue
+                                                } else {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (back == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                }if (login_status)
+	set_liked_lectures();
+                                                else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (etc == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                }if (login_status)
+	set_liked_lectures();
+                                                else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else {
+                                    $('#cards-box').empty()
+                                    listing()
+                                }
+
+                            }
+                        }
+                    )
+                }
+            );
+
+
+            //백엔드 체크 박스 동작
+            $(document).ready(function () {
+                    $("#backCheck").change(function () {
+
+                            $('#cards-box').empty()
+
+                            if ($("#backCheck").is(":checked")) {
+
+                                // 백
+                                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (back == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                }if (login_status)
+	set_liked_lectures();
+                                                else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "false" && back == "false" && etc == "true") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                    //백기
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "true" && back == "false" && etc == "false") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백기
+                                } else {
+                                    listing()
+                                }
+
+                                //백엔드 버튼 꺼졌을 때
+                            } else {
+                                if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "false" && back == "true" && etc == "false") {
+                                                    continue
+                                                } else {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
+
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                }if (login_status)
+	set_liked_lectures();
+                                                else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (etc == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                }if (login_status)
+	set_liked_lectures();
+                                                else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else {
+                                    $('#cards-box').empty()
+                                    listing()
+                                }
+
+                            }
+                        }
+                    )
+                }
+            );
+
+
+            //기타 체크 박스 동작
+            $(document).ready(function () {
+                    $("#etcCheck").change(function () {
+
+                            $('#cards-box').empty()
+
+                            if ($("#etcCheck").is(":checked")) {
+
+                                // 기
+                                if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (etc == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                }if (login_status)
+	set_liked_lectures();
+                                                else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                    //프기
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "false" && back == "true" && etc == "false") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                    //백기
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == true) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "true" && back == "false" && etc == "false") {
+                                                    continue
+                                                } else {
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                    //프백기
+                                } else {
+                                    listing()
+                                }
+
+                                //기타 버튼 꺼졌을 때
+                            } else {
+                                if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "false" && back == "false" && etc == "true") {
+                                                    continue
+                                                } else {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+                                                }if (login_status)
+	set_liked_lectures();
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == true && $("#backCheck").is(":checked") == false && $("#etcCheck").is(":checked") == false) {
+
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (front == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                }if (login_status)
+	set_liked_lectures();
+                                                else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else if ($("#frontCheck").is(":checked") == false && $("#backCheck").is(":checked") == true && $("#etcCheck").is(":checked") == false) {
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/lecture',
+                                        data: {},
+                                        success: function (response) {
+                                            let rows = response['lectures']
+
+                                            for (let i = 0; i < rows.length; i++) {
+                                                let url = rows[i]['url']
+                                                let comment = rows[i]['comment']
+                                                let title = rows[i]['title']
+                                                let image = rows[i]['image']
+                                                let front = rows[i]['frontend']
+                                                let back = rows[i]['backend']
+                                                let etc = rows[i]['etc']
+                                                let author_id = rows[i]['author_id']
+                                                let lecture_id = rows[i]['_id']
+                                                let author_name = rows[i]['author_name']
+
+                                                if (back == "true") {
+
+                                                    let temp_html = `<div class="col">
+                                            <div class="card h-95">
+                                                <div onclick="window.open('${url}')" style="cursor:pointer" target="_blank">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                </div>
+                                                <div class="card-body">
+                                                    <p onclick="window.open('${url}')" style="cursor:pointer" target="_blank" class="card-title">${title}</p>
+                                                    `
+
+             if (author_id) {
+
+						{% if login_status %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>
+`)                      {% else %}
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold;">${author_name}</span><span>님이 좋강추</span></p><p style="font-weight: lighter; color: grey" class="mycomment">"${comment}"</p>`)
+						{% endif %}
+
+                    } else {
+                        temp_html = temp_html.concat(`<p style="margin-bottom: 0px"><span style="font-weight: bold">익명 유저</span><span>가 좋강추</span></p><p class="mycomment" style="color: grey; font-weight: lighter">"${comment}"</p>`)
+                    }
+
+					temp_html = temp_html.concat(`<button data-lecture-id=${lecture_id} id=${lecture_id} class="like-btn btn btn-outline-primary" style="float:right; margin-bottom: 16px" onclick="like_lecture(this)">찜 하기</button>
+<button data-lecture-id=${lecture_id} class="unlike-btn btn btn-primary d-none" style="float:right; margin-bottom: 16px" onclick="unlike_lecture(this)">찜 해제하기</button>
+</p>
+`)
+                    temp_html = temp_html.concat(`</div></div></div>`)
+
+                    $('#cards-box').append(temp_html)
+
+                                                }if (login_status)
+	set_liked_lectures(); else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    })
+
+
+                                } else {
+                                    $('#cards-box').empty()
+                                    listing()
+                                }
+
+                            }
+                        }
+                    )
+                }
+            );
         }
 
-        $(function () {
-            $("#check_all").click(function () {
-                var chk = $(this).is(":checked");
-                if (chk) {
-                    $(".select_subject input").prop('checked', true);
-                } else {
-                    $(".select_subject input").prop('checked', false);
-                }
-            });
-        });
+
 
     </script>
-    <title>좋은 강의 추천점</title>
+    <title>좋강추</title>
 </head>
 
 <body>
@@ -411,60 +1421,60 @@
             </a>
             <div class="mini_nav">
                 <div class="log-out">
-                    <a href="/login">로그인</a>
-                    <a href="/mypage">마이페이지</a></div>
+                    <a href="/login" id="login_button">로그인</a>
+                    <a href="/mypage" id="mypage_button">마이페이지</a></div>
             </div>
 
             <a href="/lecture/post">
-            <button>강의 추천하기</button>
+            <button class="post">강의 추천하기</button>
             </a>
         </div>
 
 
     </header>
 
-    <input type="checkbox" id="check_all" class="input_check"><label for="check_all"><b>전체</b></label>
-    <ul class="select_subject">
+    <ul class="check_wrap">
 
-        <input type="checkbox" class="input_check" name="class1" id="check1" value="1"><label
-            for="check1"><b>프론트엔드</b></label>
-        <input type="checkbox" class="input_check" name="class2" id="check2" value="2"><label
-            for="check2"><b>백엔드</b></label>
-        <input type="checkbox" class="input_check" name="class3" id="check3" value="3"><label
-            for="check3"><b>기타</b></label>
+        <div class="form-check form-check-inline">
+            <input style="cursor:pointer" class="form-check-input" type="checkbox" id="frontCheck" value="option2">
+            <label style="cursor:pointer" class="form-check-label" for="frontCheck">프론트엔드</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input style="cursor:pointer" class="form-check-input" type="checkbox" id="backCheck" value="option3">
+            <label style="cursor:pointer" class="form-check-label" for="backCheck">백엔드</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input style="cursor:pointer" class="form-check-input" type="checkbox" id="etcCheck" value="option4">
+            <label style="cursor:pointer" class="form-check-label" for="etcCheck">기타</label>
+        </div>
+
     </ul>
-
-
-
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="check_all" value="option1">
-        <label class="form-check-label" for="check_all">전체</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-        <label class="form-check-label" for="inlineCheckbox2">프론트엔드</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-        <label class="form-check-label" for="inlineCheckbox3">백엔드</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
-        <label class="form-check-label" for="inlineCheckbox4">기타</label>
-    </div>
-
-
-
 
 
     <div class="mycards">
         <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
         </div>
+
     </div>
+
+
+    <div id='footer_wrapper'>
+        <div>
+            <nav>
+                <a href='https://github.com/hyjune92/jogangchoo' target='_blank'>Github</a>
+            </nav>
+            <br>
+            <p>
+                <span>항해99 6기 D반 10조</span><br/>
+                <span>한지훈   |   강형근   |   황연준</span><br/>
+                <span>Has No Copyright 2022. johgangchu. All Rights Is Yours.</span>
+            </p>
+        </div>
+    </div>
+    <footer></footer>
+
 
 </body>
 </html>

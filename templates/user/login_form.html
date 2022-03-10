@@ -1,48 +1,39 @@
 {% extends "base.html" %}
 {%block script%}
-<script>
-	function signup() {
-		let username, email, password;
-		[username, email, password] = [
-			$("#username").val(),
+	function login() {
+		let email, password;
+		[email, password] = [
 			$("#email").val(),
 			$("#password").val()
 		];
-		console.log(username, email, password);
 		user_doc = {
-				username: username,
 				email: email,
 				password: password
 		};
 		$.ajax({
 			type: 'POST',
-			url: '/user/',
+			url: '/user/login/',
 			data: user_doc,
 			success: function (response) {
-				if (response["err"]) {
-					window.alert(response["msg"]);
-				} else {
-					window.location.replace("{{url_for("user.login")}}");
-				}
+				console.log(response['msg'] );
+				console.log(response['access_token'] );
 			},
 			err: function(...err) {
 				alert(err);
 			}
 		});
 	}
-</script>
 {%endblock%}
 {%block header%}
-<h1>가입하기</h1>
+<h1>로그인</h1>
 {%endblock%}
 {%block content%}	
 	<div>
-		username:<input id="username" type="text" class="form-control"> 
 		email:
 			<input id="email" type="text" class="form-control">
 		password:
 			<input id="password" type="text" class="form-control">
-		<button onclick="signup()">회원가입</button>
+		<button onclick="login()">로그인</button>
 	</div>
 {%endblock%}
 </body>
